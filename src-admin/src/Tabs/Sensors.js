@@ -91,19 +91,19 @@ class Sensors extends Component {
         //     });
         // const things = await response.text();
         // this.setState({things});
-        const things = await this.props.socket.sendTo(`${this.props.adapterName}.${this.props.instance}`, 'getThings', {});
-        this.setState({ things });
+        const result = await this.props.socket.sendTo(`${this.props.adapterName}.${this.props.instance}`, 'getThings', {});
+        this.setState({ things: result.result.value });
     }
 
     renderLine(id, index) {
-        const item = (this.props.native.sensors || []).find(item => item['@iot.id'] === id);
+        const item = (this.state.things || []).find(item => item['@iot.id'] === id);
 
         return <TableRow key={`${index}:${id}`}>
             <TableCell>{item ? item.name : id}</TableCell>
             <TableCell>{item ? [
-                <span key={0}>{item.observedArea.coordinates[0]}</span>,
+                <span key={0}>{item.observedArea?.coordinates[0]}</span>,
                 <span key={1}>,</span>,
-                <span key={2}>{item.observedArea.coordinates[1]}</span>,
+                <span key={2}>{item.observedArea?.coordinates[1]}</span>,
             ] : null}
             </TableCell>
             <TableCell>{item?.description || ''}</TableCell>
@@ -129,7 +129,7 @@ class Sensors extends Component {
         >
             <DialogTitle>{I18n.t('Add new sensor')}</DialogTitle>
             <DialogContent>
-                <FormControl>
+                <FormControl fullWidth variant="standard">
                     <InputLabel>{I18n.t('Thing')}</InputLabel>
                     <Select
                         value={this.state.addId}
@@ -173,7 +173,7 @@ class Sensors extends Component {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {(this.state.sensors || []).map((id, index) => this.renderLine(id, index))}
+                {(this.props.native.sensors || []).map((id, index) => this.renderLine(id, index))}
             </TableBody>
             {this.renderAddNewSensor()}
         </Table>;
