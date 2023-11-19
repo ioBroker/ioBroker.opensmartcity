@@ -1,0 +1,41 @@
+{
+    "name": "opencity-admin",
+    "version": "3.0.0",
+    "private": true,
+    "dependencies": {
+        "@iobroker/adapter-react-v5": "^4.7.3",
+        "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+        "@mui/material": "5.14.14",
+        "@mui/styles": "5.14.14",
+        "@mui/icons-material": "^5.14.18",
+        "babel-eslint": "^10.1.0",
+        "@sentry/browser": "^7.80.1",
+        "@sentry/integrations": "^7.80.1",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-scripts": "^5.0.1",
+        "eslint": "^8.52.0",
+        "eslint-config-airbnb": "^19.0.4",
+        "eslint-plugin-import": "^2.29.0",
+        "eslint-plugin-jsx-a11y": "^6.7.1",
+        "eslint-plugin-react": "^7.33.2",
+        "eslint-plugin-react-hooks": "^4.6.0",
+        "eslint-plugin-eqeqeq-fix": "^1.0.3",
+        "eslint-plugin-only-warn": "^1.1.0"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "lint": "eslint --fix --ext .js,.jsx src"
+    },
+    "eslintConfig": {
+        "extends": "react-app"
+    },
+    "homepage": ".",
+    "browserslist": [
+        ">0.2%",
+        "not dead",
+        "not ie <= 11",
+        "not op_mini all"
+    ]
+}
