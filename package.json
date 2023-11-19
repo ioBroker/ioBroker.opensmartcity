@@ -1,0 +1,56 @@
+{
+  "name": "iobroker.opencity",
+  "version": "3.1.0",
+  "description": "ioBroker opencity Adapter",
+  "author": {
+    "name": "ioBroker Community Developers",
+    "email": "info@iobroker.net"
+  },
+  "contributors": [
+    {
+      "name": "ioBroker Community Developers",
+      "email": "info@iobroker.net"
+    }
+  ],
+  "homepage": "https://github.com/iobroker/ioBroker.opencity",
+  "license": "MIT",
+  "keywords": [
+    "ioBroker",
+    "opencity"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iobroker/ioBroker.opencity.git"
+  },
+  "dependencies": {
+    "@iobroker/adapter-core": "^3.0.4"
+  },
+  "devDependencies": {
+    "@alcalzone/release-script": "^3.6.0",
+    "@alcalzone/release-script-plugin-iobroker": "^3.6.0",
+    "@alcalzone/release-script-plugin-license": "^3.5.9",
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0"
+  },
+  "bugs": {
+    "url": "https://github.com/iobroker/ioBroker.opencity/issues"
+  },
+  "readmeFilename": "README.md",
+  "main": "main.js",
+  "files": [
+    "adimn/",
+    "main.js",
+    "io-package.json",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "npm run test:package && npm run test:unit",
+    "test:package": "mocha test/package --exit",
+    "test:unit": "mocha test/unit --exit",
+    "test:integration": "mocha test/integration --exit",
+    "release": "release-script",
+    "release-patch": "release-script patch --yes",
+    "release-minor": "release-script minor --yes",
+    "release-major": "release-script major --yes"
+  }
+}
