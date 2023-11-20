@@ -57,8 +57,27 @@ class App extends GenericApp {
 
         super(props, extendedProps);
 
+        this.state.alive = false;
+
         this.state.selectedTab = window.localStorage.getItem(`${this.adapterName}.${this.instance}.selectedTab`) || 'options';
     }
+
+    onConnectionReady() {
+        this.socket.subscribeState(`system.adapter.${this.adapterName}.${this.instance}.alive`, this.onAliveChanged);
+        this.socket.getState(`system.adapter.${this.adapterName}.${this.instance}.alive`)
+            .then(state => this.onAliveChanged(null, state));
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+        this.socket.unsubscribeState(`system.adapter.${this.adapterName}.${this.instance}.alive`, this.onAliveChanged);
+    }
+
+    onAliveChanged = (id, state) => {
+        if ((!!state?.val) !== this.state.alive) {
+            this.setState({ alive: !!state?.val });
+        }
+    };
 
     render() {
         if (!this.state.loaded) {
@@ -107,6 +126,7 @@ class App extends GenericApp {
                             onError={text => this.setState({ errorText: (text || text === 0) && typeof text !== 'string' ? text.toString() : text })}
                             instance={this.instance}
                             adapterName={this.adapterName}
+                            alive={this.state.alive}
                             onChange={(attr, value, cb) => this.updateNativeValue(attr, value, cb)}
                         />}
                     </div>

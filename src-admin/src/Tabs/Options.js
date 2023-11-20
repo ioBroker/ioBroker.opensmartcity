@@ -95,6 +95,15 @@ class Options extends Component {
                     value={this.props.native.password}
                     onChange={e => this.props.onChange('password', e.target.value)}
                 />
+                <TextField
+                    variant="standard"
+                    style={{ minWidth: 200 }}
+                    type="number"
+                    label={I18n.t('Poll interval')}
+                    helperText={I18n.t('in milliseconds')}
+                    value={this.props.native.pollInterval}
+                    onChange={e => this.props.onChange('pollInterval', e.target.value)}
+                />
             </div>
         </form>;
     }

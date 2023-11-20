@@ -20,9 +20,11 @@ agent.start({
 const utils = require('@iobroker/adapter-core');
 const adapterName = require('./package.json').name.split('.').pop();
 const axios = require('axios');
-const BASE_URL = 'https://frost.solingen.de:8443/FROST-Server/v1.1/';
 
 let adapter;
+const checked = {}
+let interval;
+let lastResult;
 
 function startAdapter(options) {
     options = options || {};
@@ -31,13 +33,17 @@ function startAdapter(options) {
     adapter = new utils.Adapter(options);
 
     adapter.on('ready', ready);
+    adapter.on('unload', cb => {
+        interval && clearInterval(interval);
+        cb && cb();
+    });
     adapter.on('message', obj => obj && processMessage(obj));
 
     return adapter;
 }
 
 async function getUrl(pathName) {
-    const url = BASE_URL + pathName;
+    const url = adapter.config.url + pathName;
     try {
         const headers = {
             Authorization: `Basic ${Buffer.from(`${adapter.config.user}:${adapter.config.password}`).toString('base64')}`,
@@ -60,18 +66,65 @@ async function getUrl(pathName) {
 
 async function processMessage(obj) {
     if (obj.command === 'getThings') {
-        const result = await getUrl('Things');
-        adapter.sendTo(obj.from, obj.command, { result }, obj.callback);
+        if (!lastResult) {
+            const result = await getUrl('Datastreams?$expand=Thing,Observations($top=1;$orderby=phenomenonTime desc)');
+            adapter.sendTo(obj.from, obj.command, { result }, obj.callback);
+        } else {
+            adapter.sendTo(obj.from, obj.command, { result: lastResult }, obj.callback);
+        }
     }
 }
 
-async function getThingsData(id) {
-    return 10;
+async function getData() {
+    const result = await getUrl('Datastreams?$expand=Thing,Observations($top=1;$orderby=phenomenonTime desc)');
+    lastResult = result;
+
+    for (let s = 0; s < adapter.config.sensors.length; s++) {
+        const id = adapter.config.sensors[s];
+        const item = result.value.find(item => item['@iot.id'] === id);
+        // create or update state
+        if (!checked[id] && item) {
+            let obj = await adapter.getObjectAsync(id.toString());
+            if (!obj) {
+                if (item.unitOfMeasurement?.symbol === '°') {
+                    item.unitOfMeasurement.symbol = '°C';
+                }
+                obj = {
+                    _id: id.toString(),
+                    type: 'state',
+                    common: {
+                        name: item.name,
+                        type: 'number',
+                        role: 'value',
+                        read: true,
+                        write: false,
+                        unit: item.unitOfMeasurement?.symbol || item.unitOfMeasurement?.name,
+                        desc: item.description,
+                    },
+                    native: {
+                        coordinates: item.observedArea.coordinates,
+                        type: item.observationType.split('/').pop(),
+                    }
+                };
+                await adapter.setObjectAsync(id.toString(), obj);
+            }
+            checked[id] = true;
+        }
+        if (item && item.Observations && item.Observations[0] && item.Observations[0].result) {
+            const ts = item.Observations[0].phenomenonTime ? new Date(item.Observations[0].phenomenonTime) : new Date();
+            adapter.setState(id.toString(), { val: item.Observations[0].result, ack: true, ts: ts.getTime() });
+        }
+    }
 }
 
 async function ready() {
+    adapter.config.pollInterval = parseInt(adapter.config.interval, 10) || 15000;
+    if (adapter.config.pollInterval < 5000) {
+        adapter.config.pollInterval = 5000;
+    }
+    await getData();
     // sync data
-
+    interval = setInterval(getData, adapter.config.pollInterval);
 }
 
 // If started as allInOne/compact mode => return function to create instance

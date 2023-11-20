@@ -52,22 +52,18 @@
         "js-controller": ">=3.1.6"
       }
     ],
-    "plugins1": {
-      "sentry": {
-        "dsn": "https://6c934cead8e048acbdc131f5684e70b0@sentry.iobroker.net/200"
-      }
-    },
     "adminUI": {
       "config": "materialize"
     },
     "dataSource": "poll",
-    "connectionType": "cloud",
-    "tier": 2
+    "connectionType": "cloud"
   },
   "native": {
-    "city": "solingen",
+    "city": "Solingen",
+    "url": "https://frost.solingen.de:8443/FROST-Server/v1.1/",
     "user": "smarthomeuser",
     "password": "Solingen2030!",
+    "pollInterval": 30000,
     "sensors": []
   },
   "objects": []
