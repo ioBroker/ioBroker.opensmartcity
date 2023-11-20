@@ -1,13 +1,13 @@
 ![Logo](admin/opensmartcity.png)
-# ioBroker.opencity
+# ioBroker.opensmartcity
 
-![Number of Installations](http://iobroker.live/badges/opencity-installed.svg)
-![Number of Installations](http://iobroker.live/badges/opencity-stable.svg)
-[![NPM version](http://img.shields.io/npm/v/iobroker.opencity.svg)](https://www.npmjs.com/package/iobroker.opencity)
+![Number of Installations](http://iobroker.live/badges/opensmartcity-installed.svg)
+![Number of Installations](http://iobroker.live/badges/opensmartcity-stable.svg)
+[![NPM version](http://img.shields.io/npm/v/iobroker.opensmartcity.svg)](https://www.npmjs.com/package/iobroker.opensmartcity)
 
-![Test and Release](https://github.com/iobroker/iobroker.opencity/workflows/Test%20and%20Release/badge.svg)
-[![Translation status](https://weblate.iobroker.net/widgets/adapters/-/opencity/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
-[![Downloads](https://img.shields.io/npm/dm/iobroker.opencity.svg)](https://www.npmjs.com/package/iobroker.opencity)
+![Test and Release](https://github.com/iobroker/iobroker.opensmartcity/workflows/Test%20and%20Release/badge.svg)
+[![Translation status](https://weblate.iobroker.net/widgets/adapters/-/opensmartcity/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.opensmartcity.svg)](https://www.npmjs.com/package/iobroker.opensmartcity)
 
 
 ## Changelog
