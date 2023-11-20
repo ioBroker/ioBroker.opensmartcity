@@ -9,7 +9,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import pack from '../package.json';
 
-window.adapterName = 'opencity';
+window.adapterName = 'opensmartcity';
 window.sentryDSN = 'https://5ad729dbed504d15aa8bde423cae9a8e@sentry.iobroker.net/57';
 
 let themeName = Utils.getThemeName();

@@ -1,4 +1,4 @@
-![Logo](admin/opencity.png)
+![Logo](admin/opensmartcity.png)
 # ioBroker.opencity
 
 ![Number of Installations](http://iobroker.live/badges/opencity-installed.svg)

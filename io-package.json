@@ -1,44 +1,44 @@
 {
   "common": {
-    "name": "opencity",
+    "name": "opensmartcity",
     "title": "OpenCity FROST Connection",
     "titleLang": {
-      "en": "OpenCity FROST"
+      "en": "OpenSmartCity FROST"
     },
     "version": "0.1.0",
     "compact": true,
     "news": {
-
     },
     "license": "MIT",
     "authors": [
       "Vegetto <iobroker@angelnu.com>"
     ],
     "desc": {
-      "en": "Allows to monitor and play files to Google Home (opencity)",
-      "de": "Ermöglicht die Überwachung und Wiedergabe von Dateien in Google Home (opencity)",
-      "ru": "Позволяет контролировать и воспроизводить файлы в Google Домой (opencity)",
-      "pt": "Permite monitorar e reproduzir arquivos no Google Home (opencity)",
-      "nl": "Hiermee kunnen bestanden worden gecontroleerd en afgespeeld op Google Home (opencity)",
-      "fr": "Permet de surveiller et de lire des fichiers sur Google Home (opencity)",
-      "it": "Permette di monitorare e riprodurre file su Google Home (opencity)",
-      "es": "Permite monitorear y reproducir archivos en Google Home (opencity)",
-      "pl": "Umożliwia monitorowanie i odtwarzanie plików w Google Home (opencity)",
-      "zh-cn": "允许监控和播放文件到 Google Home (opencity)"
+      "en": "Provides the data from german city",
+      "de": "Stellt die Daten von deutschen Städten bereit",
+      "ru": "Предоставляет данные от немецких городов",
+      "pt": "Fornece os dados da cidade alemã",
+      "nl": "Biedt de gegevens van de Duitse stad",
+      "fr": "Fournit les données de la ville allemande",
+      "it": "Fornisce i dati della città tedesca",
+      "es": "Proporciona los datos de la ciudad alemana",
+      "pl": "Zapewnia dane z niemieckiego miasta",
+      "zh-cn": "提供德国城市的数据",
+      "uk": "Надає дані німецького міста"
     },
     "platform": "Javascript/Node.js",
     "mode": "daemon",
-    "icon": "opencity.png",
+    "icon": "opensmartcity.png",
     "enabled": true,
     "keywords": [
-      "opencity",
+      "opensmartcity",
       "Google",
       "home",
       "player",
       "music"
     ],
-    "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.opencity/master/admin/opencity.png",
-    "readme": "https://github.com/iobroker-community-adapters/ioBroker.opencity/blob/master/README.md",
+    "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.opensmartcity/master/admin/opensmartcity.png",
+    "readme": "https://github.com/iobroker-community-adapters/ioBroker.opensmartcity/blob/master/README.md",
     "loglevel": "info",
     "type": "multimedia",
     "messagebox": true,

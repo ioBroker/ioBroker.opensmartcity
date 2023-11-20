@@ -171,7 +171,7 @@ class Sensors extends Component {
         this.setState({ showAddDialog: false });
     }
 
-    renderAddNewSensor(){
+    renderAddNewSensor() {
         if (!this.state.showAddDialog) {
             return null;
         }
@@ -278,26 +278,32 @@ class Sensors extends Component {
             setTimeout(() => this.setState({ alive: this.props.alive }, () => this.componentDidMount()), 200);
         }
 
-        return <Table size="small">
-            <TableHead>
-                <TableRow>
-                    <TableCell style={{ width: 20 }}>
-                        <Fab onClick={() => this.setState({ showAddDialog: true })} size="small" style={{ marginRight: 8 }}>
-                            <Add />
-                        </Fab>
-                    </TableCell>
-                    <TableCell style={{ width: 'calc(100% - 300px)' }}>Name</TableCell>
-                    <TableCell style={{ width: 150 }}>Location</TableCell>
-                    <TableCell style={{ width: 100 }}>Type</TableCell>
-                    <TableCell style={{ width: 100 }}>Value</TableCell>
-                    <TableCell style={{ width: 40 }}></TableCell>
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                {(this.props.native.sensors || []).map((id, index) => this.renderLine(id, index))}
-            </TableBody>
-            {this.renderAddNewSensor()}
-        </Table>;
+        return <div style={{ width: '100%', height: '100%' }}>
+            <div style={{ display: 'inline-block', width: 'calc(50% - 5px)'}}>
+                <Table size="small">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell style={{ width: 20 }}>
+                                <Fab onClick={() => this.setState({ showAddDialog: true })} size="small" style={{ marginRight: 8 }}>
+                                    <Add />
+                                </Fab>
+                            </TableCell>
+                            <TableCell style={{ width: 'calc(100% - 300px)' }}>Name</TableCell>
+                            <TableCell style={{ width: 150 }}>Location</TableCell>
+                            <TableCell style={{ width: 100 }}>Type</TableCell>
+                            <TableCell style={{ width: 100 }}>Value</TableCell>
+                            <TableCell style={{ width: 40 }}></TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {(this.props.native.sensors || []).map((id, index) => this.renderLine(id, index))}
+                    </TableBody>
+                    {this.renderAddNewSensor()}
+                </Table>
+            </div>
+            <div style={{ display: 'inline-block', width: 'calc(50% - 5px)', marginLeft: 5 }}>
+            </div>
+        </div>;
     }
 }
 
