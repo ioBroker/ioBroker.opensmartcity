@@ -14,8 +14,7 @@
 <!--
     ### **WORK IN PROGRESS**
 -->
-
-### 0.1.0
+### **WORK IN PROGRESS**
 * (bluefox) Initial release
 
 ## License
