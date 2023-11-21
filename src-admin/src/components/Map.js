@@ -10,7 +10,7 @@ import {
 } from 'ol/style';
 import { OSM, Vector as VectorSource } from 'ol/source';
 import { Point } from 'ol/geom';
-import { toLonLat, fromLonLat } from 'ol/proj';
+import { /* toLonLat, */ fromLonLat } from 'ol/proj';
 
 import { Component, createRef } from 'react';
 
