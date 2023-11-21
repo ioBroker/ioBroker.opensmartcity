@@ -56,7 +56,20 @@
       "config": "materialize"
     },
     "dataSource": "poll",
-    "connectionType": "cloud"
+    "connectionType": "cloud",
+    "visWidgets": {
+      "echarts": {
+        "i18n": "component",
+        "name": "opensmartcity",
+        "url": "opensmartcity/customWidgets.js",
+        "components": [
+          "OpenSmartCityMap"
+        ]
+      }
+    },
+    "restartAdapters": [
+      "vis-2"
+    ]
   },
   "native": {
     "city": "Solingen",
