@@ -1,5 +1,5 @@
 ![Logo](admin/opensmartcity.png)
-# ioBroker.opensmartcity
+# ioBroker.OpenSmartCity
 
 ![Number of Installations](http://iobroker.live/badges/opensmartcity-installed.svg)
 ![Number of Installations](http://iobroker.live/badges/opensmartcity-stable.svg)
