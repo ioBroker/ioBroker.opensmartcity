@@ -34,7 +34,7 @@ class App extends WidgetDemoApp {
 
     onConnectionChanged = isConnected => {
         this.setState({ ready: isConnected });
-    }
+    };
 
     renderWidget() {
         return <div className={this.props.classes.app}>

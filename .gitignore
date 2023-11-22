@@ -26,6 +26,8 @@ admin/words.js
 /src/public/js/adapter-settings-aes.js
 testSentry.bat
 /adminWww/
+/src-widgets/build/*
+/src-widgets/node_modules/*
 
 # ioBroker dev-server
 .dev-server/
