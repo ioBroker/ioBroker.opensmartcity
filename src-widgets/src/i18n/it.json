@@ -1,3 +1,9 @@
 {
-
+  "set_label": "Open Smart City",
+  "OpenSmartCityMap": "Open Smart City Map",
+  "without_card": "Senza confine",
+  "name": "Titolo del widget",
+  "instance": "Esempio",
+  "hide_home": "Nascondi casa",
+  "zoom_level": "Livello di zoom"
 }

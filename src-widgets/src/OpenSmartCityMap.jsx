@@ -67,7 +67,7 @@ class OpenSmartCityMap extends Generic {
                 height: 300,
                 position: 'relative',
             },
-            visPrev: 'widgets/echarts/img/prev_opensmartcity.png',
+            visPrev: 'widgets/opensmartcity/img/prev_opensmartcity.png',
         };
     }
 

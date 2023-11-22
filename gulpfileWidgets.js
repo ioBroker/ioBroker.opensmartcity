@@ -35,6 +35,7 @@ module.exports = function init(gulp) {
         ]).pipe(gulp.dest(`widgets/${adapterName}/static`)),
         gulp.src([
             ...gulpHelper.copyFiles(`${__dirname}/src-widgets/`),
+            'src-widgets/build/static/js/*_ol_ol_*.*'
         ]).pipe(gulp.dest(`widgets/${adapterName}/static/js`)),
         gulp.src([`src-widgets/src/i18n/*.json`]).pipe(gulp.dest(`widgets/${adapterName}/i18n`)),
         new Promise(resolve =>

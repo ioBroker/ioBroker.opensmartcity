@@ -58,7 +58,7 @@
     "dataSource": "poll",
     "connectionType": "cloud",
     "visWidgets": {
-      "echarts": {
+      "opensmartcity": {
         "i18n": "component",
         "name": "opensmartcity",
         "url": "opensmartcity/customWidgets.js",

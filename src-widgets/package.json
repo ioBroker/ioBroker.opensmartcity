@@ -1,5 +1,5 @@
 {
-    "name": "iobroker.echarts",
+    "name": "iobroker.opensmartcity",
     "private": true,
     "version": "0.1.1",
     "dependencies": {

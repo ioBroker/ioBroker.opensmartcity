@@ -1,3 +1,9 @@
 {
-
+  "set_label": "Open Smart City",
+  "OpenSmartCityMap": "Open Smart City Map",
+  "without_card": "Sans frontière",
+  "name": "Titre du Widget",
+  "instance": "Exemple",
+  "hide_home": "Cacher la maison",
+  "zoom_level": "Le niveau de zoom"
 }

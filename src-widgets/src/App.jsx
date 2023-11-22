@@ -47,6 +47,7 @@ class App extends WidgetDemoApp {
                 }}
                 data={{
                     instance: '0',
+                    hideHome: true,
                 }}
             /> : null}
         </div>;

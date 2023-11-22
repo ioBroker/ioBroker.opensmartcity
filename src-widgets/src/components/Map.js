@@ -82,7 +82,7 @@ class OlMap extends Component {
         }
         let extent;
 
-        if (this.state.rxData.hideHome) {
+        if (!this.props.hideHome) {
             // Create an empty extent
             extent = createOrUpdate(center[0], center[1], center[0], center[1]);
         } else {
@@ -93,7 +93,7 @@ class OlMap extends Component {
 
         // Extend the extent to include each point
         this.state.points.forEach((point, i) => {
-            if (!i && this.state.rxData.hideHome) {
+            if (!i && this.props.hideHome) {
                 return;
             }
             const pPoint = fromLonLat([point.longitude, point.latitude]);
@@ -108,9 +108,9 @@ class OlMap extends Component {
     }
 
     calculateCenter() {
-        let count = this.state.rxData.hideHome ? 0 : 1;
-        let longs = this.state.rxData.hideHome ? 0 : parseFloat(this.state.longitude || 0);
-        let lats = this.state.rxData.hideHome ? 0 : parseFloat(this.state.latitude || 0);
+        let count = this.props.hideHome ? 0 : 1;
+        let longs = this.props.hideHome ? 0 : parseFloat(this.state.longitude || 0);
+        let lats = this.props.hideHome ? 0 : parseFloat(this.state.latitude || 0);
         this.state.points.forEach(point => {
             longs += point.longitude;
             lats += point.latitude;
@@ -326,6 +326,7 @@ OlMap.propTypes = {
     socket: PropTypes.object,
     points: PropTypes.array,
     onSelect: PropTypes.func,
+    hideHome: PropTypes.bool,
 };
 
 export default OlMap;

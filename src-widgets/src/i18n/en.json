@@ -1,3 +1,9 @@
 {
-
+  "set_label": "Open Smart City",
+  "OpenSmartCityMap": "Open Smart City Map",
+  "without_card": "Without border",
+  "name": "Widget title",
+  "instance": "Instance",
+  "hide_home": "Hide home",
+  "zoom_level": "Zoom level"
 }

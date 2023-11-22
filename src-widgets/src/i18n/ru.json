@@ -1,3 +1,9 @@
 {
-
+  "set_label": "Open Smart City",
+  "OpenSmartCityMap": "Open Smart City Карта",
+  "without_card": "Без границы",
+  "name": "Название виджета",
+  "instance": "Экземпляр",
+  "hide_home": "Скрыть дом",
+  "zoom_level": "Уровень масштабирования"
 }

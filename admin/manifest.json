@@ -1,6 +1,6 @@
 {
-  "short_name": "ioBroker.iot",
-  "name": "ioBroker.iot Settings",
+  "short_name": "ioBroker.OpenSmartCity",
+  "name": "OpenSmartCity Settings",
   "icons": [
     {
       "src": "favicon.ico",

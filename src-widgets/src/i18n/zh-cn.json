@@ -1,3 +1,9 @@
 {
-
+  "set_label": "Open Smart City",
+  "OpenSmartCityMap": "Open Smart City Map",
+  "without_card": "无边框",
+  "name": "小部件标题",
+  "instance": "实例",
+  "hide_home": "隐藏家",
+  "zoom_level": "缩放级别"
 }
