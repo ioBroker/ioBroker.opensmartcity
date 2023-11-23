@@ -5,5 +5,10 @@
   "Password": "密码",
   "Poll interval": "轮询间隔",
   "in milliseconds": "以毫秒为单位",
-  "Your home": "你家"
+  "Your home": "你家",
+  "FROST Server URL": "弗罗斯特服务器 URL",
+  "Add new thing": "添加新站",
+  "Thing": "车站",
+  "Add": "添加",
+  "Cancel": "取消"
 }

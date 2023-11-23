@@ -77,7 +77,7 @@
     "user": "smarthomeuser",
     "password": "Solingen2030!",
     "pollInterval": 30000,
-    "sensors": []
+    "things": []
   },
   "objects": []
 }

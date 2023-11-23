@@ -5,5 +5,10 @@
   "Password": "Пароль",
   "Poll interval": "Інтервал опитування",
   "in milliseconds": "в мілісекундах",
-  "Your home": "Твій дім"
+  "Your home": "Твій дім",
+  "FROST Server URL": "URL-адреса сервера FROST",
+  "Add new thing": "Додати нову станцію",
+  "Thing": "Станція",
+  "Add": "додати",
+  "Cancel": "Скасувати"
 }

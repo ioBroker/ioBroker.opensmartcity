@@ -17,6 +17,12 @@ const styles = () => ({
 const Generic = window.visRxWidget || VisRxWidget;
 
 class OpenSmartCityMap extends Generic {
+    constructor(props) {
+        super(props);
+        this.state._key = 0;
+        this.hideHome = null;
+    }
+
     static getWidgetInfo() {
         return {
             id: 'tplOpenSmartCityMap',
@@ -76,17 +82,26 @@ class OpenSmartCityMap extends Generic {
         return OpenSmartCityMap.getWidgetInfo();
     }
 
-    static buildPoints(things, values) {
+    static buildPoints(things, dataStreams, values) {
         return Object.keys(things).map(id => {
             const obj = things[id];
+            if (!obj.native || !obj.native.coordinates || !obj.native.coordinates.length) {
+                return null;
+            }
             return {
                 longitude: obj.native.coordinates[0],
                 latitude: obj.native.coordinates[1],
-                unit: obj.common.unit,
-                value: values[id] ? values[id].val : '--',
                 name: obj.common.name && typeof obj.common.name === 'object' ? (obj.common.name[this.props.context.lang] || obj.common.name.en) : (obj.common.name || ''),
+                description: obj.common.desc && typeof obj.common.desc === 'object' ? (obj.common.desc[this.props.context.lang] || obj.common.desc.en) : (obj.common.desc || ''),
+                dataStreams: Object.keys(dataStreams).filter(dsId => dsId.startsWith(`${id}.`)).map(dsId => ({
+                    id: dsId.split('.').pop(),
+                    name: dataStreams[dsId].common.name,
+                    description: dataStreams[dsId].common.desc,
+                    value: values[dsId] && values[dsId].val !== undefined ? values[dsId].val : null,
+                    unit: dataStreams[dsId].common.unit || '',
+                })),
             };
-        });
+        }).filter(p => p);
     }
 
     onDataUpdated = (id, state) => {
@@ -94,30 +109,32 @@ class OpenSmartCityMap extends Generic {
         values[id] = state;
         this.setState({
             values,
-            points: OpenSmartCityMap.buildPoints(this.state.things, values),
+            points: OpenSmartCityMap.buildPoints(this.state.things, this.state.dataStreams, values),
         });
     };
 
     async propertiesUpdate() {
-        const subscribed = `system.adapter.opensmartcity.${this.state.rxData.instance}`;
+        const subscribed = `${this.state.rxData.instance}.*`;
         // unsubscribe from old
         if (this.subscribed && this.subscribed !== subscribed) {
             this.props.context.socket.unsubscribeObject(this.subscribed, this.onPointsChanged);
-            await this.props.context.socket.unsubscribeStates(`${this.subscribed.replace('system.adapter.', '')}.*`, this.onDataUpdated);
+            await this.props.context.socket.unsubscribeStates(this.subscribed, this.onDataUpdated);
             this.subscribed = null;
         }
         if (this.state.rxData.instance !== null && this.state.rxData.instance !== undefined && this.subscribed !== subscribed) {
             this.subscribed = subscribed;
-            const things = await this.props.context.socket.getObjectViewSystem('state', `opensmartcity.${this.state.rxData.instance}.`, `opensmartcity.${this.state.rxData.instance}.\u9999`);
-            const values = await this.props.context.socket.getStates(`${this.subscribed.replace('system.adapter.', '')}.*`);
+            const things = await this.props.context.socket.getObjectViewSystem('channel', this.subscribed.replace(/\*$/, ''), `${subscribed.replace(/\*$/, '')}\u9999`);
+            const dataStreams = await this.props.context.socket.getObjectViewSystem('state', this.subscribed.replace(/\*$/, ''), `${subscribed.replace(/\*$/, '')}\u9999`);
+            const values = await this.props.context.socket.getForeignStates(this.subscribed);
 
             this.setState({
                 things,
                 values,
-                points: OpenSmartCityMap.buildPoints(things, values),
+                dataStreams,
+                points: OpenSmartCityMap.buildPoints(things, dataStreams, values),
             }, async () => {
-                await this.props.context.socket.subscribeObject(`system.adapter.opensmartcity.${this.state.rxData.instance}`, this.onPointsChanged);
-                await this.props.context.socket.subscribeState(`${this.subscribed.replace('system.adapter.', '')}.*`, this.onDataUpdated);
+                await this.props.context.socket.subscribeObject(this.subscribed, this.onPointsChanged);
+                await this.props.context.socket.subscribeState(this.subscribed, this.onDataUpdated);
             });
         }
     }
@@ -131,12 +148,44 @@ class OpenSmartCityMap extends Generic {
         await this.propertiesUpdate();
     }
 
-    onPointsChanged = () => this.propertiesUpdate();
+    onPointsChanged = (id, obj) => {
+        if (!obj) {
+            if (this.state.things[id]) {
+                const things = { ...this.state.things };
+                delete things[id];
+                this.setState({
+                    things,
+                    points: OpenSmartCityMap.buildPoints(things, this.state.dataStreams, this.state.values),
+                });
+            } else if (this.state.dataStreams[id]) {
+                const dataStreams = { ...this.state.dataStreams };
+                delete dataStreams[id];
+                this.setState({
+                    dataStreams,
+                    points: OpenSmartCityMap.buildPoints(this.state.things, dataStreams, this.state.values),
+                });
+            }
+        } else if (obj.type === 'channel') {
+            const things = { ...this.state.things };
+            things[id] = obj;
+            this.setState({
+                things,
+                points: OpenSmartCityMap.buildPoints(things, this.state.dataStreams, this.state.values),
+            });
+        } else if (obj.type === 'state') {
+            const dataStreams = { ...this.state.dataStreams };
+            dataStreams[id] = obj;
+            this.setState({
+                dataStreams,
+                points: OpenSmartCityMap.buildPoints(this.state.things, dataStreams, this.state.values),
+            });
+        }
+    };
 
     async componentWillUnmount() {
         if (this.subscribed) {
             await this.props.context.socket.unsubscribeObject(this.subscribed, this.onPointsChanged);
-            await this.props.context.socket.unsubscribeState(`${this.subscribed.replace('system.adapter.', '')}.*`, this.onDataUpdated);
+            await this.props.context.socket.unsubscribeState(this.subscribed, this.onDataUpdated);
             this.subscribed = null;
         }
     }
@@ -147,10 +196,19 @@ class OpenSmartCityMap extends Generic {
 
     renderWidgetBody(props) {
         super.renderWidgetBody(props);
+
+        if (this.hideHome === null) {
+            this.hideHome = this.state.rxData.hideHome;
+        } else if (this.hideHome !== this.state.rxData.hideHome) {
+            this.hideHome = this.state.rxData.hideHome;
+            setTimeout(() => this.setState({ _key: this.state._key + 1 }), 100);
+        }
+
         const content = <Map
+            key={this.state._key}
             socket={this.props.context.socket}
             id={`map_${this.props.id}`}
-            points={this.state.points || []}
+            things={this.state.points || []}
             hideHome={this.state.rxData.hideHome}
         />;
 

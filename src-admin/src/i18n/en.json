@@ -5,5 +5,10 @@
   "Password": "Password",
   "Poll interval": "Poll interval",
   "in milliseconds": "in milliseconds",
-  "Your home": "Your home"
+  "Your home": "Your home",
+  "FROST Server URL": "FROST Server URL",
+  "Add new thing": "Add new station",
+  "Thing": "Station",
+  "Add": "Add",
+  "Cancel": "Cancel"
 }

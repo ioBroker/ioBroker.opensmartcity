@@ -31,7 +31,7 @@ class OlMap extends Component {
         this.state = {
             longitude: 0,
             latitude:  0,
-            points:    [...this.props.points],
+            things:    [...this.props.things],
             mapHeight: 0,
             mapWidth:  0,
         };
@@ -39,12 +39,12 @@ class OlMap extends Component {
         this.refMap = createRef();
     }
 
-    positionReady(position) {
-        this.setState({
-            latitude:  position.coords.latitude.toFixed(8),
-            longitude: position.coords.longitude.toFixed(8),
-        }, () => this.updateMap());
-    }
+    // positionReady(position) {
+    //     this.setState({
+    //         latitude:  position.coords.latitude.toFixed(8),
+    //         longitude: position.coords.longitude.toFixed(8),
+    //     }, () => this.updateMap());
+    // }
 
     // getPositionForAddress() {
     //     window.fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(`${this.state.country} ${this.state.city} ${this.state.address}`)}`)
@@ -77,20 +77,30 @@ class OlMap extends Component {
     calculateZoomLevel(map) {
         const center = fromLonLat([parseFloat(this.state.longitude || 0), parseFloat(this.state.latitude || 0)]);
 
-        if (!this.state.points?.length) {
+        if (!this.state.things?.length) {
             return 17;
         }
+        let extent;
 
+        if (!this.props.hideHome) {
         // Create an empty extent
-        const extent = createOrUpdate(center[0], center[1], center[0], center[1]);
+            extent = createOrUpdate(center[0], center[1], center[0], center[1]);
+        } else {
+            // take first point as a center
+            const pPoint = fromLonLat([this.state.things[0].longitude, this.state.things[0].latitude]);
+            extent = createOrUpdate(pPoint[0], pPoint[1], pPoint[0], pPoint[1]);
+        }
 
         // Extend the extent to include each point
-        this.state.points.forEach(point => {
+        this.state.things.forEach((point, i) => {
+            if (!i && this.props.hideHome) {
+                return;
+            }
             const pPoint = fromLonLat([point.longitude, point.latitude]);
             extend(extent, [pPoint[0], pPoint[1], pPoint[0], pPoint[1]]);
         });
 
-        // Fit the map view to the extent of the points
+        // Fit the map view to the extent of the things
         map.getView().fit(extent, map.getSize());
 
         // Return the zoom level of the map after fitting
@@ -98,10 +108,10 @@ class OlMap extends Component {
     }
 
     calculateCenter() {
-        let count = 1;
-        let longs = parseFloat(this.state.longitude || 0);
-        let lats = parseFloat(this.state.latitude || 0);
-        this.state.points.forEach(point => {
+        let count = this.props.hideHome ? 0 : 1;
+        let longs = this.props.hideHome ? 0 : parseFloat(this.state.longitude || 0);
+        let lats = this.props.hideHome ? 0 : parseFloat(this.state.latitude || 0);
+        this.state.things.forEach(point => {
             longs += point.longitude;
             lats += point.latitude;
             count++;
@@ -130,9 +140,9 @@ class OlMap extends Component {
 
     updateMap() {
         // OPEN STREET MAPS
-        if (window.navigator.geolocation && (!this.state.longitude || !this.state.latitude)) {
-            window.navigator.geolocation.getCurrentPosition(position => this.positionReady(position));
-        }
+        // if (window.navigator.geolocation && (!this.state.longitude || !this.state.latitude)) {
+        //     window.navigator.geolocation.getCurrentPosition(position => this.positionReady(position));
+        // }
 
         const center = fromLonLat([parseFloat(this.state.longitude || 0), parseFloat(this.state.latitude || 0)]);
 
@@ -207,15 +217,23 @@ class OlMap extends Component {
                 // this.setState({ longitude: lonLat[0], latitude: lonLat[1] }, () => this.updateMap());
             });
         }
-        // remove all points from layer
+        // remove all things from layer
         this.OSM.pointsSource.clear();
         // add all points to the layer
-        for (let p = 0; p < this.state.points.length; p++) {
-            const point = this.state.points[p];
+        for (let p = 0; p < this.state.things.length; p++) {
+            const thing = this.state.things[p];
             const feature = new Feature({
-                geometry: new Point(fromLonLat([point.longitude, point.latitude])),
-                name: point.name,
+                geometry: new Point(fromLonLat([thing.longitude, thing.latitude])),
+                name: thing.name,
             });
+            const text = [];
+            thing.dataStreams.forEach(ds => {
+                console.log(ds);
+                if (ds.value !== undefined && ds.value !== null) {
+                    text.push((Math.round(ds.value * 10) / 10).toString() + (ds.unit || ''));
+                }
+            });
+
             const iconTemp = new Style({
                 image: new Icon(/** @type {olx.style.IconOptions} */ ({
                     anchor: [0.5, 49],
@@ -225,7 +243,7 @@ class OlMap extends Component {
                     src: TempSVG,
                 })),
                 text: new Text({
-                    text: (Math.round(point.value * 10) / 10).toString() + point.unit,
+                    text: text.join('\n'),
                     scale: 1.2,
                     fill: new Fill({ color: '#004f00' }),
                     // stroke: new Stroke({ color: '0', width: 3 }),
@@ -236,12 +254,14 @@ class OlMap extends Component {
             this.OSM.pointsSource.addFeature(feature);
         }
 
-        this.OSM.marker.setGeometry(new Point(center));
+        if (!this.props.hideHome) {
+            this.OSM.marker.setGeometry(new Point(center));
+        }
         this.OSM.oMap.setView(new View({ center: this.calculateCenter(), zoom: this.calculateZoomLevel(this.OSM.oMap) }));
     }
 
     componentDidMount() {
-        this.props.socket.getCompactSystemConfig(true)
+        this.props.socket.getSystemConfig()
             .then(obj =>
                 this.setState({
                     longitude: obj.common.longitude,
@@ -289,9 +309,9 @@ class OlMap extends Component {
     }
 
     render() {
-        if (JSON.stringify(this.props.points) !== JSON.stringify(this.state.points) && this.OSM) {
+        if (JSON.stringify(this.props.things) !== JSON.stringify(this.state.things) && this.OSM) {
             setTimeout(() =>
-                this.setState({ points: [...this.props.points] }, () =>
+                this.setState({ things: [...this.props.things] }, () =>
                     this.refMap.current?.clientWidth && this.updateMap()), 100);
         }
 
@@ -314,8 +334,9 @@ class OlMap extends Component {
 OlMap.propTypes = {
     id: PropTypes.string,
     socket: PropTypes.object,
-    points: PropTypes.array,
+    things: PropTypes.array,
     onSelect: PropTypes.func,
+    hideHome: PropTypes.bool,
 };
 
 export default OlMap;

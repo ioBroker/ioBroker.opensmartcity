@@ -5,5 +5,10 @@
   "Password": "Hasło",
   "Poll interval": "Interwał ankiety",
   "in milliseconds": "w milisekundach",
-  "Your home": "Twój dom"
+  "Your home": "Twój dom",
+  "FROST Server URL": "Adres URL serwera FROST",
+  "Add new thing": "Dodaj nową stację",
+  "Thing": "Stacja",
+  "Add": "Dodać",
+  "Cancel": "Anulować"
 }

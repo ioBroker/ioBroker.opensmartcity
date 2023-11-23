@@ -5,5 +5,10 @@
   "Password": "Contraseña",
   "Poll interval": "Intervalo de encuesta",
   "in milliseconds": "en milisegundos",
-  "Your home": "Tu hogar"
+  "Your home": "Tu hogar",
+  "FROST Server URL": "URL del servidor FROST",
+  "Add new thing": "Agregar nueva estación",
+  "Thing": "Estación",
+  "Add": "Agregar",
+  "Cancel": "Cancelar"
 }

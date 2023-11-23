@@ -42,6 +42,24 @@ function startAdapter(options) {
     return adapter;
 }
 
+async function _getOneUrl(url, options, cb, result) {
+    result = result || [];
+    try {
+        const response = await axios(url, options);
+        if (response.data && response.data.value) {
+            result = result.concat(response.data.value);
+        }
+        if (response.data && response.data['@iot.nextLink']) {
+            setImmediate(() => _getOneUrl(decresponse.data['@iot.nextLink'], options, cb, result));
+        } else {
+            cb && cb(null, result);
+        }
+    } catch (e) {
+        adapter.log.error(`Cannot get url ${url}: ${e}`);
+        cb && cb(e, result);
+    }
+}
+
 async function getUrl(pathName) {
     const url = adapter.config.url + pathName;
     try {
@@ -54,10 +72,9 @@ async function getUrl(pathName) {
             'Cache-Control': 'max-age=0',
             'Host': 'frost.solingen.de:8443',
         };
-        const response = await axios(url, {
-            headers
-        });
-        return response.data;
+        return new Promise(resolve =>
+            _getOneUrl(url, { headers, timeout: 30000 }, ((error, result) =>
+                resolve(result))));
     } catch (e) {
         adapter.log.error(`Cannot get url ${url}: ${e}`);
         return null;
@@ -67,7 +84,10 @@ async function getUrl(pathName) {
 async function processMessage(obj) {
     if (obj.command === 'getThings') {
         if (!lastResult) {
-            const result = await getUrl('Datastreams?$expand=Thing,Observations($top=1;$orderby=phenomenonTime desc)');
+            const result = await getUrl('Things?$filter=properties/status ne \'decommissioned\'&$expand=Datastreams');
+            if (result) {
+                lastResult = result;
+            }
             adapter.sendTo(obj.from, obj.command, { result }, obj.callback);
         } else {
             adapter.sendTo(obj.from, obj.command, { result: lastResult }, obj.callback);
@@ -76,60 +96,127 @@ async function processMessage(obj) {
 }
 
 async function getData() {
-    const sensors = adapter.config.sensors.map(id => `Thing/@iot.id eq ${id}`).join(' or ');
-    if (!sensors) {
+    const things = adapter.config.things.map(id => `Thing/@iot.id eq ${id}`).join(' or ');
+    if (!things) {
+        return;
+    }
+    const result = await getUrl('Datastreams'
+        + '?$expand=Thing($select=@iot.id,properties/status),Observations($top=1;$orderby=phenomenonTime desc)'
+        + `&$filter=phenomenonTime ne null and (${things})`
+    );
+    if (!result) {
         return;
     }
 
-    const result = await getUrl('Datastreams?'
-        + '$expand=Thing,Observations($top=1;$orderby=phenomenonTime desc)'
-        // + `&$filter=Thing/properties/status eq 'online' and phenomenonTime ne null and (${sensors})`
-    );
-    lastResult = result;
+    for (let i = 0; i < result.length; i++) {
+        const ds = result[i];
+        if (ds && ds.Observations && ds.Observations[0]) {
+            const dsId = ds['@iot.id'];
+            const thingId = ds.Thing['@iot.id'];
+            const value = ds.Observations[0].result;
+            const ts = ds.Observations[0].phenomenonTime || ds.Observations[0].resultTime ? new Date(ds.Observations[0].phenomenonTime || ds.Observations[0].resultTime) : new Date();
+            await adapter.setStateAsync(`${thingId}.${dsId}`, { val: value, ack: true, ts: ts.getTime() });
+        }
+    }
+}
 
-    for (let s = 0; s < adapter.config.sensors.length; s++) {
-        const id = adapter.config.sensors[s];
-        const item = result.value.find(item => item['@iot.id'] === id);
-        // create or update state
-        if (!checked[id] && item) {
+async function createStates(){
+    const result = await getUrl('Things?$filter=properties/status ne \'decommissioned\'&$expand=Datastreams');
+    if (!result) {
+        return;
+    }
+    lastResult = result;
+    for (let t = 0; t < adapter.config.things.length; t++) {
+        const id = adapter.config.things[t];
+        const thing = result.find(item => item['@iot.id'].toString() === id);
+        if (thing) {
+            let commonPart;
+            const streamWithCoordinates = thing.Datastreams?.find(ds => ds.observedArea?.coordinates);
+            thing.Datastreams?.find(ds => {
+                const m = (ds.name || '').trim().match(/(.*)\((.*)\)/);
+                if (m) {
+                    commonPart = m[1].trim();
+                    return true;
+                }
+            });
+
+            // create or update channel
             let obj = await adapter.getObjectAsync(id.toString());
             if (!obj) {
-                if (item.unitOfMeasurement?.symbol === '°') {
-                    item.unitOfMeasurement.symbol = '°C';
-                }
                 obj = {
                     _id: id.toString(),
-                    type: 'state',
+                    type: 'channel',
                     common: {
-                        name: item.name,
-                        type: 'number',
-                        role: 'value',
-                        read: true,
-                        write: false,
-                        unit: item.unitOfMeasurement?.symbol || item.unitOfMeasurement?.name,
-                        desc: item.description,
+                        name: thing.name + (commonPart ? ` (${commonPart})` : ''),
+                        desc: thing.description,
                     },
                     native: {
-                        coordinates: item.observedArea.coordinates,
-                        type: item.observationType.split('/').pop(),
+                        coordinates: streamWithCoordinates?.observedArea?.coordinates || null,
                     }
                 };
                 await adapter.setObjectAsync(id.toString(), obj);
             }
-            checked[id] = true;
-        }
-        if (item && item.Observations && item.Observations[0] && item.Observations[0].result) {
-            const ts = item.Observations[0].phenomenonTime ? new Date(item.Observations[0].phenomenonTime) : new Date();
-            adapter.setState(id.toString(), { val: item.Observations[0].result, ack: true, ts: ts.getTime() });
+            if (thing.Datastreams) {
+                for (let d = 0; d < thing.Datastreams.length; d++) {
+                    const ds = thing.Datastreams[d];
+                    let obj = await adapter.getObjectAsync(`${id}.${ds['@iot.id']}`);
+                    if (!obj) {
+                        let unit = ds.unitOfMeasurement?.symbol || ds.unitOfMeasurement?.name;
+                        if (unit === '°') {
+                            unit = '°C';
+                        }
+                        obj = {
+                            _id: `${id}.${ds['@iot.id']}`,
+                            type: 'state',
+                            common: {
+                                name: commonPart ? ds.name.replace(commonPart, '').trim().replace(/^\(/, '').replace(/\)$/, '') : ds.name,
+                                type: 'number',
+                                role: 'value',
+                                read: true,
+                                write: false,
+                                unit,
+                                desc: ds.description,
+                            },
+                            native: {
+                            },
+                        };
+                        await adapter.setObjectAsync(obj._id, obj);
+                    }
+                }
+            }
+
+            const status = adapter.getObjectAsync(`${id}.status`);
+            if (!status) {
+                await adapter.setObjectAsync(`${id}.status`, {
+                    _id: `${id}.status`,
+                    type: 'state',
+                    common: {
+                        name: 'Status',
+                        type: 'string',
+                        role: 'indicator.reachable',
+                        read: true,
+                        write: false,
+                        desc: 'Connection status of the thing',
+                    },
+                    native: {
+                    },
+                });
+            }
+            adapter.setStateAsync(`${id}.status`, { val: thing.properties?.status === 'online', ack: true });
         }
     }
 }
 
 async function ready() {
+    adapter.config.things = adapter.config.things || [];
+    // create channels and states
+    await createStates();
+
     adapter.config.pollInterval = parseInt(adapter.config.interval, 10) || 15000;
     if (adapter.config.pollInterval < 5000) {
         adapter.config.pollInterval = 5000;
     }
+
     await getData();
     // sync data
     interval = setInterval(getData, adapter.config.pollInterval);

@@ -72,6 +72,34 @@ const styles = () => ({
         minHeight: 'calc(100% - 32px)',
         height: 'calc(100% - 32px)',
     },
+
+    valueCommonPart: {
+        fontSize: 12,
+    },
+    valueLine: {
+        fontSize: 11,
+    },
+    valueEqual: {
+        opacity: 0.7,
+        fontSize: 11,
+    },
+    valueText: {
+        fontWeight: 'bold',
+        fontSize: 11,
+    },
+    valueValue: {
+        fontSize: 11,
+
+    },
+    valueUnit: {
+        opacity: 0.7,
+        fontSize: 11,
+    },
+    valueTime: {
+        fontSize: 11,
+        fontStyle: 'italic',
+        opacity: 0.7,
+    },
 });
 
 class Sensors extends Component {
@@ -84,70 +112,204 @@ class Sensors extends Component {
             showAddDialog: false,
             requesting: false,
             alive: this.props.alive,
-            savedThings: [],
         };
     }
 
     componentDidMount() {
         if (this.state.alive) {
+            this.props.socket.subscribeState(`${this.props.adapterName}.${this.props.instance}.*`, this.onStateChanged);
+
             this.setState({ requesting: true }, async () => {
-                const result = await this.props.socket.sendTo(`${this.props.adapterName}.${this.props.instance}`, 'getThings', {});
-                const savedThings = await this.props.socket.getObjectViewSystem('state', `${this.props.adapterName}.${this.props.instance}.`, `${this.props.adapterName}.${this.props.instance}.\u9999`);
+                const actualThings = await this.props.socket.sendTo(`${this.props.adapterName}.${this.props.instance}`, 'getThings', {});
+                const savedThings = await this.props.socket.getObjectViewSystem('channel', `${this.props.adapterName}.${this.props.instance}.`, `${this.props.adapterName}.${this.props.instance}.\u9999`);
+                const savedDataStreams = await this.props.socket.getObjectViewSystem('state', `${this.props.adapterName}.${this.props.instance}.`, `${this.props.adapterName}.${this.props.instance}.\u9999`);
                 const savedValues = await this.props.socket.getStates(`${this.props.adapterName}.${this.props.instance}.*`);
-                const _savedThings = [];
+                const things = [];
+                // merge information together
+
                 Object.keys(savedThings).forEach(id => {
-                    _savedThings.push({
-                        '@iot.id': id.split('.').pop(),
+                    things.push({
+                        id: id.split('.').pop(),
                         name: savedThings[id].common.name,
                         description: savedThings[id].common.desc,
-                        observationType: savedThings[id].native.type,
-                        observedArea: {
-                            coordinates: savedThings[id].native.coordinates,
-                        },
-                        unitOfMeasurement: {
-                            symbol: savedThings[id].common.unit,
-                        },
-                        Observations: [{
-                            result: savedValues[id]?.val,
-                            phenomenonTime: new Date(savedValues[id]?.ts).toISOString(),
-                        }],
+                        coordinates: savedThings[id].native.coordinates,
+                        dataStreams: [],
+                        status: null,
                     });
                 });
+                Object.keys(savedDataStreams).forEach(id => {
+                    // find thing
+                    const parts = id.split('.');
+                    const thingId = parts[parts.length - 2];
+                    const thing = things.find(t => t.id === thingId);
+                    if (thing) {
+                        const dsId = parts[parts.length - 1];
+                        if (dsId !== 'status') {
+                            thing.dataStreams.push({
+                                id: dsId,
+                                name: savedDataStreams[id].common.name,
+                                description: savedDataStreams[id].common.desc,
+                                unit: savedDataStreams[id].common.unit,
+                                value: savedValues[id] ? savedValues[id].val : null,
+                            });
+                            thing.time = thing.time || savedValues[id]?.ts;
+                        } else {
+                            thing.status = savedValues[id]?.val ? 'online' : 'offline';
+                        }
+                    } else {
+                        // cannot be!
+                    }
+                });
+                actualThings?.result?.forEach(thing => {
+                    const thingId = thing['@iot.id'].toString();
+                    const savedThing = things.find(t => t.id === thingId);
+                    if (savedThing) {
+                        if (thing.Datastreams) {
+                            const streamWithCoordinates = thing.Datastreams?.find(ds => ds.observedArea?.coordinates);
+                            const streamWithTime = thing.Datastreams?.find(ds => ds.phenomenonTime);
+                            let time;
+                            if (streamWithTime) {
+                                time = new Date(streamWithTime.phenomenonTime.split('/').pop()).getTime();
+                            }
+                            thing.Datastreams.forEach(ds => {
+                                const savedDs = savedThing.dataStreams.find(d => d.id === ds['@iot.id'].toString());
+                                if (!savedDs) {
+                                    let unit = ds.unitOfMeasurement?.symbol || ds.unitOfMeasurement?.name;
+                                    if (unit === '°') {
+                                        unit = '°C';
+                                    }
+                                    savedThing.dataStreams.push({
+                                        id: ds['@iot.id'].toString(),
+                                        name: ds.name,
+                                        description: ds.description,
+                                        unit,
+                                    });
+                                }
+                            });
+                            savedThing.time = time || savedThing.time;
+                            savedThing.coordinates = streamWithCoordinates?.observedArea?.coordinates || savedThing.coordinates;
+                            savedThing.status = thing.properties?.status || savedThing.status;
+                        }
+                    } else {
+                        const streamWithCoordinates = thing.Datastreams?.find(ds => ds.observedArea?.coordinates);
+                        const streamWithTime = thing.Datastreams?.find(ds => ds.phenomenonTime);
+                        const streamWithName = thing.Datastreams?.find(ds => ds.name);
+                        const commonPart = streamWithName?.name?.match(/(.*)\((.*)\)/)?.[1];
+                        let time;
+                        if (streamWithTime) {
+                            time = new Date(streamWithTime.phenomenonTime.split('/').pop()).getTime();
+                        }
 
-                this.setState({ things: result.result.value, savedThings: _savedThings, requesting: false });
+                        things.push({
+                            id: thingId,
+                            name: commonPart ? `${thing.name} (${commonPart.trim()})` : thing.name,
+                            description: thing.description,
+                            coordinates: streamWithCoordinates?.observedArea?.coordinates,
+                            dataStreams: thing.Datastreams ? thing.Datastreams.map(ds => {
+                                let unit = ds.unitOfMeasurement?.symbol || ds.unitOfMeasurement?.name;
+                                if (unit === '°') {
+                                    unit = '°C';
+                                }
+
+                                return {
+                                    id: ds['@iot.id'].toString(),
+                                    name: commonPart ? ds.name.replace(commonPart, '').trim().replace(/^\(/, '').replace(/\)$/, '') : ds.name,
+                                    description: ds.description,
+                                    unit,
+                                };
+                            }) : [],
+                            status: thing.properties?.status,
+                            time,
+                        });
+                    }
+                });
+
+                this.setState({ things, requesting: false });
             });
         }
     }
 
+    componentWillUnmount() {
+        this.props.socket.unsubscribeState(`${this.props.adapterName}.${this.props.instance}.*`, this.onStateChanged);
+    }
+
+    onStateChanged = (id, state) => {
+        if (!state) {
+            return;
+        }
+        const parts = id.split('.');
+        const thingId = parts[parts.length - 2];
+        const dsId = parts[parts.length - 1];
+        let thing = this.state.things.find(t => t.id === thingId);
+        if (thing) {
+            const things = [...this.state.things];
+            thing = things.find(t => t.id === thingId);
+
+            const ds = thing.dataStreams.find(d => d.id === dsId);
+            if (ds && ds.value !== state.val) {
+                ds.value = state.val;
+                this.setState({ things });
+            }
+        }
+    };
+
+    renderDataStreams(dataStreams, time) {
+        if (!dataStreams || !dataStreams.length) {
+            return null;
+        }
+        return <div>
+            {dataStreams.map(ds => {
+                if (ds.value !== null && ds.value !== undefined) {
+                    return <div key={ds.id} className={this.props.classes.valueLine}>
+                        <span className={this.props.classes.valueText}>{ds.name}</span>
+                        <span className={this.props.classes.valueEqual}>=</span>
+                        <span className={this.props.classes.valueValue}>{ds.value}</span>
+                        <span className={this.props.classes.valueUnit}>{ds.unit || ''}</span>
+                    </div>;
+                }
+                if (ds.unit) {
+                    return <div key={ds.id}>
+                        <span className={this.props.classes.valueText}>{ds.name}</span>
+                        <span className={this.props.classes.valueUnit}>
+                            (
+                            {ds.unit}
+                            )
+                        </span>
+                    </div>;
+                }
+
+                return <div key={ds.id} className={this.props.classes.valueText}>{ds.name}</div>;
+            })}
+            {time ? <div className={this.props.classes.valueTime}>
+                <Moment
+                    locale={I18n.getLanguage()}
+                    interval={30000}
+                    date={time}
+                    fromNow
+                />
+            </div> : null}
+        </div>;
+    }
+
     renderLine(id, index) {
-        let item = (this.state.things || []).find(_item => _item['@iot.id'] === id);
-        if (!item) {
-            item = (this.state.savedThings || []).find(_item => _item['@iot.id'] === id);
-        }
-        if (item?.unitOfMeasurement?.symbol === '°') {
-            item.unitOfMeasurement.symbol = '°C';
-        }
+        const item = (this.state.things || []).find(_item => _item.id === id);
 
         return <TableRow key={`${index}:${id}`}>
             <TableCell>
-                <Circle style={{ width: 10, height: 10, color: !item ? undefined : (item?.Thing?.properties?.status === 'online' ? '#0F0' : '#F00') }} />
+                <Circle style={{ width: 10, height: 10, color: !item ? undefined : (item?.status === 'online' ? '#0F0' : '#F00') }} />
             </TableCell>
             <TableCell>
                 <div>{item ? item.name : id}</div>
                 <div className={this.props.classes.description}>{item?.description || ''}</div>
             </TableCell>
             <TableCell>
-                {item ? <span key={0}>{item.observedArea?.coordinates[0]}</span> : null}
-                {item ? <span key={1}>,</span> : null}
-                {item ? <span key={2} className={this.props.classes.preSpace}>{item.observedArea?.coordinates[1]}</span> : null}
+                {item?.coordinates ? <span key={0}>{item.coordinates[0]}</span> : null}
+                {item?.coordinates ? <span key={1}>,</span> : null}
+                {item?.coordinates ? <span key={2} className={this.props.classes.preSpace}>{item.coordinates[1]}</span> : null}
             </TableCell>
-            <TableCell>{item ? item.observationType?.split('/').pop() || '' : ''}</TableCell>
             <TableCell>
-                <div>
-                    {item?.Observations?.[0]?.result !== undefined ? item.Observations[0].result.toString() : ''}
-                    {item?.unitOfMeasurement?.symbol || item?.unitOfMeasurement?.name || ''}
-                </div>
-                <div className={this.props.classes.time} style={{ textAlign: 'left' }}>
+                {item ? this.renderDataStreams(item.dataStreams, item.time) : null}
+                {/* <div className={this.props.classes.time} style={{ textAlign: 'left' }}>
                     {item?.Observations?.[0]?.phenomenonTime ?
                         <Moment
                             locale={I18n.getLanguage()}
@@ -155,14 +317,14 @@ class Sensors extends Component {
                             date={item?.Observations[0].phenomenonTime}
                             fromNow
                         /> : null}
-                </div>
+                </div> */}
             </TableCell>
             <TableCell>
                 <IconButton
                     onClick={() => {
-                        const sensors = [...this.props.native.sensors];
-                        sensors.splice(index, 1);
-                        this.props.onChange('sensors', sensors);
+                        const things = [...this.props.native.things];
+                        things.splice(index, 1);
+                        this.props.onChange('things', things);
                     }}
                 >
                     <Delete />
@@ -171,15 +333,34 @@ class Sensors extends Component {
         </TableRow>;
     }
 
-    addSensor() {
-        const sensors = [...this.props.native.sensors];
-        sensors.push(this.state.addId);
-        this.props.onChange('sensors', sensors);
+    addThing() {
+        const things = [...this.props.native.things];
+        things.push(this.state.addId);
+        this.props.onChange('things', things);
 
         this.setState({ showAddDialog: false });
     }
 
-    renderAddNewSensor() {
+    renderOneThingInMenu(item) {
+        return <>
+            <div className={this.props.classes.menuItem1}>
+                <div>
+                    <Circle style={{ width: 10, height: 10, color: item.status === 'online' ? '#0F0' : '#F00' }} />
+                </div>
+                <div>
+                    <div>{item.name}</div>
+                    <div className={this.props.classes.description}>{item.description}</div>
+                </div>
+            </div>
+            <div>
+                <div className={this.props.classes.value}>
+                    {this.renderDataStreams(item.dataStreams, item.time)}
+                </div>
+            </div>
+        </>;
+    }
+
+    renderAddNewThing() {
         if (!this.state.showAddDialog) {
             return null;
         }
@@ -190,77 +371,31 @@ class Sensors extends Component {
             // classes={{ paper: this.props.classes.dialogPaper }}
             onClose={() => this.setState({ showAddDialog: false })}
         >
-            <DialogTitle>{I18n.t('Add new sensor')}</DialogTitle>
+            <DialogTitle>{I18n.t('Add new thing')}</DialogTitle>
             <DialogContent style={{ width: 'calc(100% - 48px)', height: 'calc(100% - 40px)' }}>
                 <FormControl fullWidth variant="standard">
-                    <InputLabel>{I18n.t('Sensor')}</InputLabel>
+                    <InputLabel>{I18n.t('Thing')}</InputLabel>
                     <Select
                         value={this.state.addId}
                         onChange={e => this.setState({ addId: e.target.value })}
                         renderValue={value => {
-                            const item = (this.state.things || []).find(_item => _item['@iot.id'] === value);
+                            const item = (this.state.things || []).find(_item => _item.id === value);
                             if (!item) {
                                 return value;
                             }
                             return <div className={this.props.classes.menuItem}>
-                                <div className={this.props.classes.menuItem1}>
-                                    <div>
-                                        <Circle style={{ width: 10, height: 10, color: item.Thing?.properties?.status === 'online' ? '#0F0' : '#F00' }} />
-                                    </div>
-                                    <div>
-                                        <div>{item.name}</div>
-                                        <div className={this.props.classes.description}>{item.description}</div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div className={this.props.classes.value}>
-                                        {item.Observations?.[0]?.result !== undefined ? item.Observations[0].result.toString() : ''}
-                                        {item.unitOfMeasurement?.symbol || item.unitOfMeasurement?.name || ''}
-                                    </div>
-                                    <div className={this.props.classes.time}>
-                                        {item.Observations?.[0]?.phenomenonTime ?
-                                            <Moment
-                                                locale={I18n.getLanguage()}
-                                                interval={30000}
-                                                date={item.Observations[0].phenomenonTime}
-                                                fromNow
-                                            /> : null}
-                                    </div>
-                                </div>
+                                {this.renderOneThingInMenu(item)}
                             </div>;
                         }}
                     >
                         {this.state.things.map(item =>
                             <MenuItem
-                                key={item['@iot.id']}
-                                value={item['@iot.id']}
+                                key={item.id}
+                                value={item.id}
                                 className={this.props.classes.menuItem}
-                                disabled={this.props.native.sensors.includes(item['@iot.id'])}
+                                disabled={this.props.native.things.includes(item.id)}
                             >
-                                <div className={this.props.classes.menuItem1}>
-                                    <div>
-                                        <Circle style={{ width: 10, height: 10, color: item.Thing?.properties?.status === 'online' ? '#0F0' : '#F00' }} />
-                                    </div>
-                                    <div>
-                                        <div>{item.name}</div>
-                                        <div className={this.props.classes.description}>{item.description}</div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div className={this.props.classes.value}>
-                                        {item.Observations?.[0]?.result !== undefined ? item.Observations[0].result.toString() : ''}
-                                        {item.unitOfMeasurement?.symbol || item.unitOfMeasurement?.name || ''}
-                                    </div>
-                                    <div className={this.props.classes.time}>
-                                        {item.Observations?.[0]?.phenomenonTime ?
-                                            <Moment
-                                                locale={I18n.getLanguage()}
-                                                interval={30000}
-                                                date={item.Observations[0].phenomenonTime}
-                                                fromNow
-                                            /> : null}
-                                    </div>
-                                </div>
+                                {this.renderOneThingInMenu(item)}
                             </MenuItem>)}
                     </Select>
                 </FormControl>
@@ -286,7 +421,7 @@ class Sensors extends Component {
                     variant="contained"
                     disabled={!this.state.addId}
                     color="primary"
-                    onClick={() => this.addSensor()}
+                    onClick={() => this.addThing()}
                     startIcon={<Add />}
                 >
                     {I18n.t('Add')}
@@ -329,15 +464,14 @@ class Sensors extends Component {
                             </TableCell>
                             <TableCell style={{ width: 'calc(100% - 300px)' }}>Name</TableCell>
                             <TableCell style={{ width: 150 }}>Location</TableCell>
-                            <TableCell style={{ width: 100 }}>Type</TableCell>
                             <TableCell style={{ width: 100 }}>Value</TableCell>
                             <TableCell style={{ width: 40 }}></TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {(this.props.native.sensors || []).map((id, index) => this.renderLine(id, index))}
+                        {(this.props.native.things || []).map((id, index) => this.renderLine(id, index))}
                     </TableBody>
-                    {this.renderAddNewSensor()}
+                    {this.renderAddNewThing()}
                 </Table>
             </div>
             <div
@@ -352,23 +486,18 @@ class Sensors extends Component {
             >
                 <Map
                     socket={this.props.socket}
-                    points={(this.props.native.sensors || []).map(id => {
-                        let item = (this.state.things || []).find(_item => _item['@iot.id'] === id);
-                        if (!item) {
-                            item = (this.state.savedThings || []).find(_item => _item['@iot.id'] === id);
-                        }
-                        if (item?.unitOfMeasurement?.symbol === '°') {
-                            item.unitOfMeasurement.symbol = '°C';
-                        }
-                        if (!item) {
+                    things={(this.props.native.things || []).map(id => {
+                        const item = (this.state.things || []).find(_item => _item.id === id);
+                        if (!item || !item.coordinates) {
                             return null;
                         }
                         return {
-                            longitude: item?.observedArea?.coordinates[0],
-                            latitude: item?.observedArea?.coordinates[1],
-                            unit: item?.unitOfMeasurement?.symbol || item?.unitOfMeasurement?.name,
-                            value: item?.Observations?.[0]?.result,
-                            name: item?.name,
+                            longitude: item.coordinates[0],
+                            latitude: item.coordinates[1],
+                            name: item.name,
+                            description: item.description,
+                            time: item.time,
+                            dataStreams: item.dataStreams,
                         };
                     }).filter(f => f)}
                 />

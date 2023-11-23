@@ -95,6 +95,7 @@ class Options extends Component {
                     value={this.props.native.password}
                     onChange={e => this.props.onChange('password', e.target.value)}
                 />
+                <br />
                 <TextField
                     variant="standard"
                     style={{ minWidth: 200 }}
@@ -103,6 +104,14 @@ class Options extends Component {
                     helperText={I18n.t('in milliseconds')}
                     value={this.props.native.pollInterval}
                     onChange={e => this.props.onChange('pollInterval', e.target.value)}
+                />
+                <br />
+                <TextField
+                    variant="standard"
+                    style={{ width: '100%', maxWidth: 1000 }}
+                    label={I18n.t('FROST Server URL')}
+                    value={this.props.native.url}
+                    onChange={e => this.props.onChange('url', e.target.value)}
                 />
             </div>
         </form>;

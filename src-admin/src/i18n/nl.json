@@ -5,5 +5,10 @@
   "Password": "Wachtwoord",
   "Poll interval": "Poll-interval",
   "in milliseconds": "in milliseconden",
-  "Your home": "Uw huis"
+  "Your home": "Uw huis",
+  "FROST Server URL": "FROST-server-URL",
+  "Add new thing": "Nieuw station toevoegen",
+  "Thing": "Station",
+  "Add": "Toevoegen",
+  "Cancel": "Annuleren"
 }
