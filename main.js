@@ -76,7 +76,15 @@ async function processMessage(obj) {
 }
 
 async function getData() {
-    const result = await getUrl('Datastreams?$expand=Thing,Observations($top=1;$orderby=phenomenonTime desc)');
+    const sensors = adapter.config.sensors.map(id => `Thing/@iot.id eq ${id}`).join(' or ');
+    if (!sensors) {
+        return;
+    }
+
+    const result = await getUrl('Datastreams?'
+        + '$expand=Thing,Observations($top=1;$orderby=phenomenonTime desc)'
+        // + `&$filter=Thing/properties/status eq 'online' and phenomenonTime ne null and (${sensors})`
+    );
     lastResult = result;
 
     for (let s = 0; s < adapter.config.sensors.length; s++) {
