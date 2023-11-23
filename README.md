@@ -14,7 +14,7 @@
 <!--
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.1.3 (2023-11-23)
 * (bluefox) Changed sensor structure
 
 ### 0.1.2 (2023-11-22)
