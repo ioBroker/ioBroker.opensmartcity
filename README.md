@@ -14,6 +14,9 @@
 <!--
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (bluefox) Changed sensor structure
+
 ### 0.1.2 (2023-11-22)
 * (bluefox) Added widget
 
