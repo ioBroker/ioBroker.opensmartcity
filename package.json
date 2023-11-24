@@ -6,6 +6,9 @@
     "name": "ioBroker Community Developers",
     "email": "info@iobroker.net"
   },
+  "engines": {
+    "node": ">=16"
+  },
   "contributors": [
     {
       "name": "ioBroker Community Developers",
@@ -43,7 +46,8 @@
   "readmeFilename": "README.md",
   "main": "main.js",
   "files": [
-    "adimn/",
+    "admin/",
+    "widgets/",
     "main.js",
     "io-package.json",
     "LICENSE"

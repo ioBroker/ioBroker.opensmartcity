@@ -20,10 +20,10 @@ agent.start({
 const utils = require('@iobroker/adapter-core');
 const adapterName = require('./package.json').name.split('.').pop();
 const axios = require('axios');
+const { URL } = require('node:url');
 
 let adapter;
-const checked = {}
-let interval;
+let pollTimer;
 let lastResult;
 
 function startAdapter(options) {
@@ -34,7 +34,7 @@ function startAdapter(options) {
 
     adapter.on('ready', ready);
     adapter.on('unload', cb => {
-        interval && clearInterval(interval);
+        pollTimer && clearTimeout(pollTimer);
         cb && cb();
     });
     adapter.on('message', obj => obj && processMessage(obj));
@@ -63,6 +63,8 @@ async function _getOneUrl(url, options, cb, result) {
 async function getUrl(pathName) {
     const url = adapter.config.url + pathName;
     try {
+        const parts = new URL(url);
+
         const headers = {
             Authorization: `Basic ${Buffer.from(`${adapter.config.user}:${adapter.config.password}`).toString('base64')}`,
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
@@ -70,7 +72,7 @@ async function getUrl(pathName) {
             'Accept-Encoding': 'gzip, deflate, br',
             'Accept-Language': 'de-DE,de;q=0.9,de-DE;q=0.8,de;q=0.7,en-US;q=0.6,en;q=0.5',
             'Cache-Control': 'max-age=0',
-            'Host': 'frost.solingen.de:8443',
+            'Host': parts.host,
         };
         return new Promise(resolve =>
             _getOneUrl(url, { headers, timeout: 30000 }, ((error, result) =>
@@ -96,6 +98,9 @@ async function processMessage(obj) {
 }
 
 async function getData() {
+    pollTimer && clearTimeout(pollTimer);
+    pollTimer = null;
+
     const things = adapter.config.things.map(id => `Thing/@iot.id eq ${id}`).join(' or ');
     if (!things) {
         return;
@@ -118,6 +123,11 @@ async function getData() {
             await adapter.setStateAsync(`${thingId}.${dsId}`, { val: value, ack: true, ts: ts.getTime() });
         }
     }
+
+    pollTimer = setTimeout(() => {
+        pollTimer = null;
+        getData();
+    }, adapter.config.pollInterval);
 }
 
 async function createStates(){
@@ -208,18 +218,17 @@ async function createStates(){
 }
 
 async function ready() {
+    adapter.config.url = adapter.config.url || 'https://frost.solingen.de:8443/FROST-Server/v1.1/';
     adapter.config.things = adapter.config.things || [];
     // create channels and states
     await createStates();
 
-    adapter.config.pollInterval = parseInt(adapter.config.interval, 10) || 15000;
+    adapter.config.pollInterval = parseInt(adapter.config.pollInterval, 10) || 15000;
     if (adapter.config.pollInterval < 5000) {
         adapter.config.pollInterval = 5000;
     }
 
     await getData();
-    // sync data
-    interval = setInterval(getData, adapter.config.pollInterval);
 }
 
 // If started as allInOne/compact mode => return function to create instance
