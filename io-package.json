@@ -5,9 +5,22 @@
     "titleLang": {
       "en": "OpenSmartCity FROST"
     },
-    "version": "0.1.3",
+    "version": "0.2.0",
     "compact": true,
     "news": {
+      "0.2.0": {
+        "en": "Changed sensor structure",
+        "de": "Geänderte Sensorstruktur",
+        "ru": "Изменена структура датчика",
+        "pt": "Estrutura do sensor alterada",
+        "nl": "Veranderde sensorstructuur",
+        "fr": "Structure du capteur modifiée",
+        "it": "Struttura del sensore modificata",
+        "es": "Estructura de sensores modificada",
+        "pl": "Zmienił strukturę czujnika",
+        "uk": "Зміна структури датчика",
+        "zh-cn": "改变传感器结构"
+      }
     },
     "license": "MIT",
     "authors": [

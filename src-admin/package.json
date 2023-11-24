@@ -1,6 +1,6 @@
 {
     "name": "opensmartcity-admin",
-    "version": "0.1.2",
+    "version": "0.2.0",
     "private": true,
     "dependencies": {
         "@iobroker/adapter-react-v5": "^4.7.3",
