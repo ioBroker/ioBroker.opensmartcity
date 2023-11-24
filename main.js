@@ -34,7 +34,7 @@ function startAdapter(options) {
 
     adapter.on('ready', ready);
     adapter.on('unload', cb => {
-        pollTimer && clearTimeout(pollTimer);
+        pollTimer && adapter.clearTimeout(pollTimer);
         cb && cb();
     });
     adapter.on('message', obj => obj && processMessage(obj));
@@ -124,7 +124,7 @@ async function getData() {
         }
     }
 
-    pollTimer = setTimeout(() => {
+    pollTimer = adapter.setTimeout(() => {
         pollTimer = null;
         getData();
     }, adapter.config.pollInterval);
