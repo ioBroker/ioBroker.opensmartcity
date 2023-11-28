@@ -5,9 +5,22 @@
     "titleLang": {
       "en": "OpenSmartCity FROST"
     },
-    "version": "0.2.0",
+    "version": "0.2.1",
     "compact": true,
     "news": {
+      "0.2.1": {
+        "en": "Corrected vis-2 widget",
+        "de": "Korrigiert vis-2 Widget",
+        "ru": "Исправлен виджет vis-2",
+        "pt": "Corrigido vis-2 widget",
+        "nl": "Vertaling:",
+        "fr": "Corrigé vis-2 widget",
+        "it": "Corretto vis-2 widget",
+        "es": "Corregido vis-2 widget",
+        "pl": "Poprawka wizowa 2",
+        "uk": "Corrected vis-2 віджет",
+        "zh-cn": "更正"
+      },
       "0.2.0": {
         "en": "Changed sensor structure",
         "de": "Geänderte Sensorstruktur",
