@@ -123,8 +123,8 @@ class OpenSmartCityMap extends Generic {
         }
         if (this.state.rxData.instance !== null && this.state.rxData.instance !== undefined && this.subscribed !== subscribed) {
             this.subscribed = subscribed;
-            const things = await this.props.context.socket.getObjectViewSystem('channel', this.subscribed.replace(/\*$/, ''), `${subscribed.replace(/\*$/, '')}\u9999`);
-            const dataStreams = await this.props.context.socket.getObjectViewSystem('state', this.subscribed.replace(/\*$/, ''), `${subscribed.replace(/\*$/, '')}\u9999`);
+            const things = await this.props.context.socket.getObjectViewSystem('channel', this.subscribed.replace(/\*$/, ''), `${this.subscribed.replace(/\*$/, '')}\u9999`);
+            const dataStreams = await this.props.context.socket.getObjectViewSystem('state', this.subscribed.replace(/\*$/, ''), `${this.subscribed.replace(/\*$/, '')}\u9999`);
             const values = await this.props.context.socket.getForeignStates(this.subscribed);
 
             this.setState({
