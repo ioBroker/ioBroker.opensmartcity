@@ -14,6 +14,9 @@
 <!--
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (bluefox) Corrected vis-2 widget
+
 ### 0.2.0 (2023-11-24)
 * (bluefox) Changed sensor structure
 
