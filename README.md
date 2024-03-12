@@ -14,6 +14,10 @@
 <!--
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+* (bluefox) Corrected readme link
+* (bluefox) Packages were updated
+
 ### 0.2.1 (2023-11-28)
 * (bluefox) Corrected vis-2 widget
 

@@ -63,8 +63,8 @@
       "player",
       "music"
     ],
-    "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.opensmartcity/master/admin/opensmartcity.png",
-    "readme": "https://github.com/iobroker-community-adapters/ioBroker.opensmartcity/blob/master/README.md",
+    "extIcon": "https://raw.githubusercontent.com/iobroker/ioBroker.opensmartcity/master/admin/opensmartcity.png",
+    "readme": "https://github.com/iobroker/ioBroker.opensmartcity/blob/master/README.md",
     "loglevel": "info",
     "type": "weather",
     "messagebox": true,
@@ -92,6 +92,11 @@
           "OpenSmartCityMap"
         ]
       }
+    },
+    "tier": 3,
+    "licenseInformation": {
+      "type": "free",
+      "link": "https://github.com/iobroker/ioBroker.opensmartcity/blob/master/LICENSE"
     },
     "restartAdapters": [
       "vis-2"
