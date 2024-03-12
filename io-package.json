@@ -5,9 +5,22 @@
     "titleLang": {
       "en": "OpenSmartCity FROST"
     },
-    "version": "0.2.1",
+    "version": "0.2.2",
     "compact": true,
     "news": {
+      "0.2.2": {
+        "en": "Corrected readme link\nPackages were updated",
+        "de": "Korrigierter Readme-Link\nPakete wurden aktualisiert",
+        "ru": "Исправленная ссылка на считывание\nОбновлены пакеты",
+        "pt": "Link de leitura correto\nPacotes foram atualizados",
+        "nl": "Gecorrigeerde readme-link\nPakketten werden bijgewerkt",
+        "fr": "Lien de lecture corrigé\nLes paquets ont été mis à jour",
+        "it": "Collegamento corretto di lettura\nI pacchetti sono stati aggiornati",
+        "es": "Enlace de lectura corregido\nSe actualizaron los paquetes",
+        "pl": "Poprawiony link do odczytu\nPakiety zostały zaktualizowane",
+        "uk": "Виправлено посилання для читання\nПакети оновлено",
+        "zh-cn": "修正的读取链接\n软件包已更新"
+      },
       "0.2.1": {
         "en": "Corrected vis-2 widget",
         "de": "Korrigiert vis-2 Widget",
@@ -63,8 +76,8 @@
       "player",
       "music"
     ],
-    "extIcon": "https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.opensmartcity/master/admin/opensmartcity.png",
-    "readme": "https://github.com/iobroker-community-adapters/ioBroker.opensmartcity/blob/master/README.md",
+    "extIcon": "https://raw.githubusercontent.com/iobroker/ioBroker.opensmartcity/master/admin/opensmartcity.png",
+    "readme": "https://github.com/iobroker/ioBroker.opensmartcity/blob/master/README.md",
     "loglevel": "info",
     "type": "weather",
     "messagebox": true,
@@ -92,6 +105,11 @@
           "OpenSmartCityMap"
         ]
       }
+    },
+    "tier": 3,
+    "licenseInformation": {
+      "type": "free",
+      "link": "https://github.com/iobroker/ioBroker.opensmartcity/blob/master/LICENSE"
     },
     "restartAdapters": [
       "vis-2"

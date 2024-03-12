@@ -14,6 +14,10 @@
 <!--
     ### **WORK IN PROGRESS**
 -->
+### 0.2.2 (2024-03-12)
+* (bluefox) Corrected readme link
+* (bluefox) Packages were updated
+
 ### 0.2.1 (2023-11-28)
 * (bluefox) Corrected vis-2 widget
 
@@ -29,7 +33,7 @@
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2023 ioBroker Community Developers
+Copyright (c) 2023-2024 ioBroker Community Developers
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
