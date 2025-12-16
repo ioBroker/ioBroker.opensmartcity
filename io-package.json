@@ -1,7 +1,6 @@
 {
   "common": {
     "name": "opensmartcity",
-    "title": "OpenCity FROST Connection",
     "titleLang": {
       "en": "OpenSmartCity FROST"
     },
