@@ -7,7 +7,7 @@
     "email": "info@iobroker.net"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=22"
   },
   "contributors": [
     {
