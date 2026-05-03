@@ -30,6 +30,8 @@
 ### 0.1.1 (2023-11-21)
 * (bluefox) Initial release
 
+[Older changelogs can be found there](CHANGELOG_OLD.md)
+
 ## License
 The MIT License (MIT)
 
