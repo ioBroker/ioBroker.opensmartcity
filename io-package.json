@@ -87,7 +87,7 @@
     ],
     "dependencies": [
       {
-        "js-controller": ">=5"
+        "js-controller": ">=6.0.11"
       }
     ],
     "adminUI": {

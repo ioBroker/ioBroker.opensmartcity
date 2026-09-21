@@ -17,6 +17,10 @@
 <!--
     ### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+- (ioBroker-Bot) Adapter requires js-controller >= 6.0.11 now.
+
 ### 0.2.2 (2024-03-12)
 * (bluefox) Corrected readme link
 * (bluefox) Packages were updated
