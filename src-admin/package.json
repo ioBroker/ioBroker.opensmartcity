@@ -24,7 +24,7 @@
         "eslint-plugin-react": "^7.34.0",
         "eslint-plugin-react-hooks": "^4.6.0",
         "eslint-plugin-eqeqeq-fix": "^1.0.3",
-        "eslint-plugin-only-warn": "^1.1.0"
+        "eslint-plugin-only-warn": "^1.2.1"
     },
     "scripts": {
         "start": "react-scripts start",
