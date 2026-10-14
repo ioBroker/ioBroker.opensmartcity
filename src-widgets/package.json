@@ -22,7 +22,7 @@
         "eslint-plugin-jsx-a11y": "^6.8.0",
         "eslint-plugin-only-warn": "^1.1.0",
         "eslint-plugin-react": "^7.34.0",
-        "eslint-plugin-react-hooks": "^4.6.0",
+        "eslint-plugin-react-hooks": "^4.6.2",
         "iobroker.opensmartcity": "file:..",
         "node-sass": "^9.0.0",
         "ol": "^9.0.0",
