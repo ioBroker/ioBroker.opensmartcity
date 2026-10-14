@@ -13,7 +13,7 @@
         "@mui/material": "5.14.14",
         "@mui/styles": "5.14.14",
         "cd": "^0.3.3",
-        "craco-esbuild": "^0.5.2",
+        "craco-esbuild": "^0.6.1",
         "craco-module-federation": "^1.1.0",
         "eslint": "^8.57.0",
         "eslint-config-airbnb": "^19.0.4",
