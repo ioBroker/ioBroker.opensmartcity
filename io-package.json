@@ -14,9 +14,22 @@
       "uk": "OpenSmartCity FROST",
       "zh-cn": "OpenSmartCity FROST"
     },
-    "version": "0.2.2",
+    "version": "0.2.3",
     "compact": true,
     "news": {
+      "0.2.3": {
+        "en": "Adapter requires js-controller >= 6.0.11 now.\nAdapter requires node.js >= 22 and admin >= 7.6.17 now\nFixed the crash when the FROST server returns its data in several pages\nUpdated packages, migrated to ESLint 9, added the standard tests (they run on Windows and macOS too)",
+        "de": "Adapter benötigt jetzt JS-Controller >= 6.0.11.\nAdapter benötigt jetzt node.js >= 22 und admin >= 7.6.17\nAbsturz behoben, als der FROST-Server mehrere Seiten ausgab\nPakete aktualisiert, auf ESLint 9 migriert, Standardtests hinzugefügt (auch für Windows und macOS)",
+        "ru": "Теперь для адаптера требуется js-контроллер >= 6.0.11.\nТеперь для адаптера требуется файл node.js >= 22 и администратор >= 7.6.17\nИсправлен сбой, когда сервер FROST возвращал свои данные на нескольких страницах\nОбновленные пакеты, перенесенные на ESLint 9, добавили стандартные тесты (они также работают в Windows и macOS)",
+        "pt": "O adaptador exige js-controller >= 6.0.11.\nAgora o adaptador exige node.js >= 22 e admin >= 7.6.17\nCorrigida a falha no servidor FROST em várias páginas\nPacotes atualizados, migrados para o ESLint 9, adicionaram testes padrão (Windows e macOS)",
+        "nl": "Voor de adapter is nu een js-controller >= 6.0.11 nodig.\nVoor de adapter is nu node.js >= 22 en admin >= 7.6.17 nodig\nDe crash is opgelost toen de FROST-server zijn gegevens op meerdere pagina's teruggaf\nBijgewerkte pakketten, gemigreerd naar ESLint 9, waaraan de standaardtests zijn toegevoegd (ze draaien ook op Windows en MacOS)",
+        "fr": "Adapter nécessite JS-Controller >= 6.0.11.\nAdapter nécessite node.js >= 22 et admin >= 7.6.17\nCorrection du crash du serveur FROST qui renvoyait ses données en plusieurs pages\nPackages mis à jour, migrés vers ESLint 9, ajout des tests standard (ils fonctionnent sur Windows et macOS)",
+        "it": "Adapter richiede js-controller >= 6.0.11 ora.\nAdapter richiede node.js =2 e admin >= 7.6.17 ora\nRisolto il crash del server FROST che restituiva i dati in più pagine\nPacchetti aggiornati, migrati a ESLint 9, test standard (anche su Windows e macOS)",
+        "es": "El adaptador ahora requiere js-controller >= 6.0.11.\nEl adaptador necesita node.js >= 22 y admin >= 7.6.17 ahora\nSe corrigió el fallo cuando el servidor FROST devolvía sus datos en varias páginas\nActualizó los paquetes, migró a ESLint 9, añadió las pruebas estándar (también funcionan en Windows y macOS)",
+        "pl": "Adapter wymaga teraz kontrolera js->= 6.0.11.\nAdapter wymaga teraz node.js >= 22 i admin >= 7.6.17\nNaprawiono awarię, gdy serwer FROST zwracał swoje dane na kilku stronach\nZaktualizowane pakiety, migrowane do eSlint 9, dodano standardowe testy (działają również na Windows i macOS)",
+        "uk": "Для адаптера зараз потрібен js-контролер >= 6.0.11.\nДля адаптера потрібні node.js >= 22 і адміністратор >= 7.6.17 зараз\nВиправлена помилка, коли сервер FROST повертає свої дані на декількох сторінках\nОновлені пакети, перенесені на ESLint 9, додані стандартні тести (вони також працюють на Windows і macOS)",
+        "zh-cn": "适配器现在需要 js-controller >= 6.0.11。\n适配器现在需要 node.js >= 22 和管理员 >= 7.6.17\n修复了 FROST 服务器分几页返回数据时崩溃的问题\n更新后的软件包迁移到ESLint 9，增加了标准测试（它们也可以在Windows和macOS上运行）"
+      },
       "0.2.2": {
         "en": "Corrected readme link\nPackages were updated",
         "de": "Korrigierter Readme-Link\nPakete wurden aktualisiert",
