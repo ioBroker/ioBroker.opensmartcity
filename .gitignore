@@ -19,7 +19,6 @@ admin/words.js
 /lib/passportSocket.js
 /src/build
 /src/package-lock.json
-/package-lock.json
 /src/.eslintcache
 /src-admin/package-lock.json
 /src/public_aes

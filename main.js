@@ -28,7 +28,7 @@ let lastResult;
 
 function startAdapter(options) {
     options = options || {};
-    Object.assign(options, {name: adapterName});
+    Object.assign(options, { name: adapterName });
 
     adapter = new utils.Adapter(options);
 
@@ -50,7 +50,7 @@ async function _getOneUrl(url, options, cb, result) {
             result = result.concat(response.data.value);
         }
         if (response.data && response.data['@iot.nextLink']) {
-            setImmediate(() => _getOneUrl(decresponse.data['@iot.nextLink'], options, cb, result));
+            setImmediate(() => _getOneUrl(response.data['@iot.nextLink'], options, cb, result));
         } else {
             cb && cb(null, result);
         }
@@ -67,16 +67,15 @@ async function getUrl(pathName) {
 
         const headers = {
             Authorization: `Basic ${Buffer.from(`${adapter.config.user}:${adapter.config.password}`).toString('base64')}`,
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+            'User-Agent':
+                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
             Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
             'Accept-Encoding': 'gzip, deflate, br',
             'Accept-Language': 'de-DE,de;q=0.9,de-DE;q=0.8,de;q=0.7,en-US;q=0.6,en;q=0.5',
             'Cache-Control': 'max-age=0',
-            'Host': parts.host,
+            Host: parts.host,
         };
-        return new Promise(resolve =>
-            _getOneUrl(url, { headers, timeout: 30000 }, ((error, result) =>
-                resolve(result))));
+        return new Promise(resolve => _getOneUrl(url, { headers, timeout: 30000 }, (error, result) => resolve(result)));
     } catch (e) {
         adapter.log.error(`Cannot get url ${url}: ${e}`);
         return null;
@@ -86,7 +85,7 @@ async function getUrl(pathName) {
 async function processMessage(obj) {
     if (obj.command === 'getThings') {
         if (!lastResult) {
-            const result = await getUrl('Things?$filter=properties/status ne \'decommissioned\'&$expand=Datastreams');
+            const result = await getUrl("Things?$filter=properties/status ne 'decommissioned'&$expand=Datastreams");
             if (result) {
                 lastResult = result;
             }
@@ -98,16 +97,17 @@ async function processMessage(obj) {
 }
 
 async function getData() {
-    pollTimer && clearTimeout(pollTimer);
+    pollTimer && adapter.clearTimeout(pollTimer);
     pollTimer = null;
 
     const things = adapter.config.things.map(id => `Thing/@iot.id eq ${id}`).join(' or ');
     if (!things) {
         return;
     }
-    const result = await getUrl('Datastreams'
-        + '?$expand=Thing($select=@iot.id,properties/status),Observations($top=1;$orderby=phenomenonTime desc)'
-        + `&$filter=phenomenonTime ne null and (${things})`
+    const result = await getUrl(
+        'Datastreams' +
+            '?$expand=Thing($select=@iot.id,properties/status),Observations($top=1;$orderby=phenomenonTime desc)' +
+            `&$filter=phenomenonTime ne null and (${things})`,
     );
     if (!result) {
         return;
@@ -119,7 +119,10 @@ async function getData() {
             const dsId = ds['@iot.id'];
             const thingId = ds.Thing['@iot.id'];
             const value = ds.Observations[0].result;
-            const ts = ds.Observations[0].phenomenonTime || ds.Observations[0].resultTime ? new Date(ds.Observations[0].phenomenonTime || ds.Observations[0].resultTime) : new Date();
+            const ts =
+                ds.Observations[0].phenomenonTime || ds.Observations[0].resultTime
+                    ? new Date(ds.Observations[0].phenomenonTime || ds.Observations[0].resultTime)
+                    : new Date();
             await adapter.setStateAsync(`${thingId}.${dsId}`, { val: value, ack: true, ts: ts.getTime() });
         }
     }
@@ -130,8 +133,8 @@ async function getData() {
     }, adapter.config.pollInterval);
 }
 
-async function createStates(){
-    const result = await getUrl('Things?$filter=properties/status ne \'decommissioned\'&$expand=Datastreams');
+async function createStates() {
+    const result = await getUrl("Things?$filter=properties/status ne 'decommissioned'&$expand=Datastreams");
     if (!result) {
         return;
     }
@@ -162,7 +165,7 @@ async function createStates(){
                     },
                     native: {
                         coordinates: streamWithCoordinates?.observedArea?.coordinates || null,
-                    }
+                    },
                 };
                 await adapter.setObjectAsync(id.toString(), obj);
             }
@@ -179,7 +182,9 @@ async function createStates(){
                             _id: `${id}.${ds['@iot.id']}`,
                             type: 'state',
                             common: {
-                                name: commonPart ? ds.name.replace(commonPart, '').trim().replace(/^\(/, '').replace(/\)$/, '') : ds.name,
+                                name: commonPart
+                                    ? ds.name.replace(commonPart, '').trim().replace(/^\(/, '').replace(/\)$/, '')
+                                    : ds.name,
                                 type: 'number',
                                 role: 'value',
                                 read: true,
@@ -187,8 +192,7 @@ async function createStates(){
                                 unit,
                                 desc: ds.description,
                             },
-                            native: {
-                            },
+                            native: {},
                         };
                         await adapter.setObjectAsync(obj._id, obj);
                     }
@@ -208,8 +212,7 @@ async function createStates(){
                         write: false,
                         desc: 'Connection status of the thing',
                     },
-                    native: {
-                    },
+                    native: {},
                 });
             }
             adapter.setStateAsync(`${id}.status`, { val: thing.properties?.status === 'online', ack: true });
@@ -232,7 +235,7 @@ async function ready() {
 }
 
 // If started as allInOne/compact mode => return function to create instance
-if (typeof module !== undefined && module.parent) {
+if (module.parent) {
     module.exports = startAdapter;
 } else {
     // or start the instance directly

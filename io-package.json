@@ -2,7 +2,17 @@
   "common": {
     "name": "opensmartcity",
     "titleLang": {
-      "en": "OpenSmartCity FROST"
+      "en": "OpenSmartCity FROST",
+      "de": "OpenSmartCity FROST",
+      "ru": "OpenSmartCity FROST",
+      "pt": "OpenSmartCity FROST",
+      "nl": "OpenSmartCity FROST",
+      "fr": "OpenSmartCity FROST",
+      "it": "OpenSmartCity FROST",
+      "es": "OpenSmartCity FROST",
+      "pl": "OpenSmartCity FROST",
+      "uk": "OpenSmartCity FROST",
+      "zh-cn": "OpenSmartCity FROST"
     },
     "version": "0.2.2",
     "compact": true,
@@ -47,7 +57,6 @@
         "zh-cn": "改变传感器结构"
       }
     },
-    "license": "MIT",
     "authors": [
       "Vegetto <iobroker@angelnu.com>"
     ],
@@ -82,7 +91,7 @@
     "messagebox": true,
     "globalDependencies": [
       {
-        "admin": ">=5.1.28"
+        "admin": ">=7.6.17"
       }
     ],
     "dependencies": [
@@ -108,7 +117,7 @@
     "tier": 3,
     "licenseInformation": {
       "type": "free",
-      "link": "https://github.com/iobroker/ioBroker.opensmartcity/blob/master/LICENSE"
+      "license": "MIT"
     },
     "restartAdapters": [
       "vis-2"
@@ -122,5 +131,8 @@
     "pollInterval": 30000,
     "things": []
   },
-  "objects": []
+  "objects": [],
+  "protectedNative": [
+    "password"
+  ]
 }
