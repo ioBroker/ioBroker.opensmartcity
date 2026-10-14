@@ -37,3 +37,8 @@ updates:
     versioning-strategy: 'increase'
     cooldown:
       default-days: 7
+    # the GUIs are built with react-scripts and adapter-react-v5 4.x, which pin React 18 and MUI 5
+    ignore:
+      - dependency-name: '*'
+        update-types:
+          - 'version-update:semver-major'
