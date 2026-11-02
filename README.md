@@ -11,6 +11,9 @@
 
 
 ## Changelog
+
+### **WORK IN PROGRESS**
+- (copilot) Adapter requires node.js >= 22.19.0 now
 <!--
     ### **WORK IN PROGRESS**
 -->
