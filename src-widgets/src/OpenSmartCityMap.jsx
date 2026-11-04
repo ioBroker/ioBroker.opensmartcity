@@ -1,22 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles, withTheme } from '@mui/styles';
-
-import { VisRxWidget } from '@iobroker/vis-2-widgets-react-dev';
 
 import Map from './components/Map';
 
-const styles = () => ({
-    content: {
-        display: 'flex',
-        width: '100%',
-        height: '100%',
-    },
-});
-
-const Generic = window.visRxWidget || VisRxWidget;
-
-class OpenSmartCityMap extends Generic {
+class OpenSmartCityMap extends window.visRxWidget {
     constructor(props) {
         super(props);
         this.state._key = 0;
@@ -227,4 +214,4 @@ OpenSmartCityMap.propTypes = {
     data: PropTypes.object,
 };
 
-export default withStyles(styles)(withTheme(OpenSmartCityMap));
+export default OpenSmartCityMap;
