@@ -6,48 +6,46 @@
  **/
 'use strict';
 
-const fs   = require('node:fs');
-const gulpHelper  = require('@iobroker/vis-2-widgets-react-dev/gulpHelper');
+const { deleteFoldersRecursive, npmInstall, buildReact, copyFiles } = require('@iobroker/build-tools');
 const adapterName = require('./package.json').name.split('.').pop();
+
+const SRC = 'src-widgets/';
+const src = `${__dirname}/${SRC}`;
 
 module.exports = function init(gulp) {
     gulp.task('[widgets]clean', done => {
-        gulpHelper.deleteFoldersRecursive(`${__dirname}/widgets`);
-        gulpHelper.deleteFoldersRecursive(`${__dirname}/src-widgets/build`);
+        deleteFoldersRecursive(`${__dirname}/widgets`);
+        deleteFoldersRecursive(`${src}build`);
         done();
     });
 
-    gulp.task('[widgets]2-npm', async () => gulpHelper.npmInstall(`${__dirname}/src-widgets/`));
+    gulp.task('[widgets]2-npm', () => npmInstall(src));
 
     gulp.task('[widgets]2-npm-dep', gulp.series('[widgets]clean', '[widgets]2-npm'));
 
-    gulp.task('[widgets]3-build', async () => gulpHelper.buildWidgets(__dirname, `${__dirname}/src-widgets/`));
+    // tsc checks the syntax of the sources first, then vite builds the bundle
+    gulp.task('[widgets]3-build', () => buildReact(src, { rootDir: __dirname, vite: true, tsc: true }));
 
-    gulp.task('[widgets]3-build-dep', gulp.series('[widgets]2-npm', '[widgets]3-build'));
+    // Starts with `[widgets]clean`: the copy step only adds files, so the chunks of a previous build would stay in `widgets/`
+    gulp.task('[widgets]3-build-dep', gulp.series('[widgets]2-npm-dep', '[widgets]3-build'));
 
-    gulp.task('[widgets]5-copy', () => Promise.all([
-        gulp.src([`src-widgets/build/*.js`]).pipe(gulp.dest(`widgets/${adapterName}`)),
-        gulp.src([`src-widgets/build/img/*`]).pipe(gulp.dest(`widgets/${adapterName}/img`)),
-        gulp.src([`src-widgets/build/*.map`]).pipe(gulp.dest(`widgets/${adapterName}`)),
-        gulp.src([
-            `src-widgets/build/static/**/*`,
-            ...gulpHelper.ignoreFiles(`${__dirname}/src-widgets/`),
-        ]).pipe(gulp.dest(`widgets/${adapterName}/static`)),
-        gulp.src([
-            ...gulpHelper.copyFiles(`${__dirname}/src-widgets/`),
-            'src-widgets/build/static/js/*_ol_ol_*.*'
-        ]).pipe(gulp.dest(`widgets/${adapterName}/static/js`)),
-        gulp.src([`src-widgets/src/i18n/*.json`]).pipe(gulp.dest(`widgets/${adapterName}/i18n`)),
-        new Promise(resolve =>
-            setTimeout(() => {
-                if (fs.existsSync(`widgets/${adapterName}/static/media`) &&
-                    !fs.readdirSync(`widgets/${adapterName}/static/media`).length
-                ) {
-                    fs.rmdirSync(`widgets/${adapterName}/static/media`);
-                }
-                resolve(null);
-            }, 500)
-        )
-    ]));
+    // Copy the Vite output into `widgets/<adapter>/`, which is what vis-2 loads at runtime (`common.visWidgets` in io-package.json)
+    gulp.task('[widgets]5-copy', done => {
+        copyFiles(
+            [
+                `${SRC}build/**/*`,
+                // Entry page of the stand-alone dev server, not part of the widget set
+                `!${SRC}build/index.html`,
+                // Statistics of the federation build. `mf-manifest.json` is NOT excluded: vis-2 reads it to see
+                // which modules this widget set shares, and refuses a set that does not share `react/jsx-runtime`.
+                `!${SRC}build/mf-stats.json`,
+            ],
+            `widgets/${adapterName}`,
+        );
+        // Keep the standalone i18n files alongside the widgets
+        copyFiles([`${SRC}src/i18n/*.json`], `widgets/${adapterName}/i18n`);
+        done();
+    });
+
     gulp.task('[widgets]5-copy-dep', gulp.series('[widgets]3-build-dep', '[widgets]5-copy'));
 };
