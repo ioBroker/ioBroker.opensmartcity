@@ -1,0 +1,27 @@
+// Specialized tsconfig for the admin GUI: DOM typings, JSX and bundler resolution.
+// vite emits the bundle, tsc only type-checks (tasks.ts runs it before every build, `npm run check-admin` in the root).
+{
+    "compilerOptions": {
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "allowJs": false,
+        "checkJs": false,
+        "resolveJsonModule": true,
+        "strict": true,
+        "strictNullChecks": true,
+        "noImplicitAny": true,
+        "useUnknownInCatchVariables": false,
+        "target": "ES2022",
+        "lib": ["ES2022", "DOM", "DOM.Iterable"],
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "verbatimModuleSyntax": true,
+        "forceConsistentCasingInFileNames": true,
+        "skipLibCheck": true,
+        "noEmit": true,
+        "jsx": "react-jsx",
+        "types": ["@iobroker/types", "vite/client"]
+    },
+    "include": ["./src/**/*.ts", "./src/**/*.d.ts", "./src/**/*.tsx", "./src/**/*.json"],
+    "exclude": ["**/node_modules", "**/build"]
+}
