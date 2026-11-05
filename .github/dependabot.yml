@@ -37,7 +37,8 @@ updates:
     versioning-strategy: 'increase'
     cooldown:
       default-days: 7
-    # the GUIs are built with react-scripts and adapter-react-v5 4.x, which pin React 18 and MUI 5
+    # admin and widgets run on React 19, MUI 9, @iobroker/gui-components 10 and Vite 8 - the same stack as vis-2.
+    # A major update of one of them has to be done for both GUIs together and by hand.
     ignore:
       - dependency-name: '*'
         update-types:
