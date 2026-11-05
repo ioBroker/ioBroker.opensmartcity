@@ -18,7 +18,7 @@ var __spreadValues = (a2, b) => {
 };
 var __spreadProps = (a2, b) => __defProps(a2, __getOwnPropDescs(b));
 import {t as e} from "./helpers-PTLizuYm.js";
-import {t} from "./vite-preload-helper-CRzLMJPS.js";
+import {t} from "./vite-preload-helper-DclECHGd.js";
 let i, a;
 let __tla = (async () => {
   var _a, _b;
@@ -120,7 +120,7 @@ let __tla = (async () => {
         await m2.__tla;
         return m2;
       }), [], import.meta.url)).init(), {usedShared: p} = await t(async () => {
-        let {usedShared: e2} = await import("./_virtual_mf-localSharedImportMap___mfe_internal__opensmartcity__mf_owner__1-yBo9zdJq.js").then(async (m2) => {
+        let {usedShared: e2} = await import("./_virtual_mf-localSharedImportMap___mfe_internal__opensmartcity__mf_owner__1-DUMew0g3.js").then(async (m2) => {
           await m2.__tla;
           return m2;
         });
@@ -195,47 +195,59 @@ let __tla = (async () => {
         scope: [
           r2
         ]
-      }), `version-first`);
-      for (let e2 of g)
-        await Promise.all(e2.map(async (e3) => {
-          var _a2, _b2;
-          let t2 = p[e3];
-          if (!t2 || t2.materialize === false && !t2.lazy || t2.treeShaking)
-            return;
-          let a3 = n2(e3, t2.shareConfig?.singleton, t2.version, t2.scope);
-          if (i2(r.share, a3) === void 0 || h(e3, t2) || !t2.shareConfig?.singleton && c(r.share, a3) !== `opensmartcity`) {
-            if (t2.shareConfig?.import === false) {
-              let n3 = y(t2), r2 = (n4) => !S(f.shareScopeMap?.[n4]?.[e3], e3, t2, n4);
-              if (n3.some(r2)) {
-                f.__mfKeepAdoptedProviders || (f.__mfKeepAdoptedProviders = true, f.sharedHandler?.hooks?.lifecycle?.afterRegisterShare?.on?.((e4) => {
-                  let {shared: t3, previousShared: n4, registeredShared: r3} = e4 || {}, i3 = f.shareScopeMap?.[e4.scope]?.[e4.pkgName];
-                  t3 && i3 && (t3.shareConfig?.import === false ? r3 === t3 && n4 && n4.shareConfig?.import !== false && i3[t3.version] === t3 && (i3[t3.version] = n4) : r3 !== t3 && r3?.shareConfig?.import === false && !r3.loaded && i3[t3.version] === r3 && (i3[t3.version] = t3));
-                }));
-                for (let i3 of globalThis.__FEDERATION__?.__INSTANCES__ || [])
-                  for (let a4 of n3) {
-                    let n4 = i3?.shareScopeMap?.[a4]?.[e3];
-                    if (!S(n4, e3, t2, a4) || !r2(a4))
-                      continue;
-                    let o2 = (_b2 = (_a2 = f.shareScopeMap)[a4] || (_a2[a4] = {}))[e3] || (_b2[e3] = {});
-                    for (let [e4, t3] of Object.entries(n4))
-                      t3?.shareConfig?.import !== false && (o2[e4] && o2[e4].shareConfig?.import !== false || (o2[e4] = t3));
-                  }
+      }), `version-first`), C = r.pinnedShareOwners || (r.pinnedShareOwners = new Set()), w = r.hostShareInit, T;
+      r.hostShareInit = new Promise((e2) => {
+        T = e2;
+      }), await w;
+      try {
+        for (let e2 of g)
+          await Promise.all(e2.map(async (e3) => {
+            var _a2, _b2;
+            let t2 = p[e3];
+            if (!t2 || t2.materialize === false && !t2.lazy || t2.treeShaking)
+              return;
+            let a3 = n2(e3, t2.shareConfig?.singleton, t2.version, t2.scope), o2 = () => {
+              if (!t2.shareConfig?.singleton || i2(r.share, a3) === void 0)
+                return false;
+              let e4 = c(r.share, a3);
+              return e4 === void 0 ? false : e4 === `opensmartcity` ? C.has(e4) : !(f.options?.remotes || []).some((t3) => t3.name === e4) && (C.add(e4), true);
+            };
+            if (!o2() && (i2(r.share, a3) === void 0 || h(e3, t2) || !t2.shareConfig?.singleton && c(r.share, a3) !== `opensmartcity`)) {
+              if (t2.shareConfig?.import === false) {
+                let n3 = y(t2), r2 = (n4) => !S(f.shareScopeMap?.[n4]?.[e3], e3, t2, n4);
+                if (n3.some(r2)) {
+                  f.__mfKeepAdoptedProviders || (f.__mfKeepAdoptedProviders = true, f.sharedHandler?.hooks?.lifecycle?.afterRegisterShare?.on?.((e4) => {
+                    let {shared: t3, previousShared: n4, registeredShared: r3} = e4 || {}, i3 = f.shareScopeMap?.[e4.scope]?.[e4.pkgName];
+                    t3 && i3 && (t3.shareConfig?.import === false ? r3 === t3 && n4 && n4.shareConfig?.import !== false && i3[t3.version] === t3 && (i3[t3.version] = n4) : r3 !== t3 && r3?.shareConfig?.import === false && !r3.loaded && i3[t3.version] === r3 && (i3[t3.version] = t3));
+                  }));
+                  for (let i3 of globalThis.__FEDERATION__?.__INSTANCES__ || [])
+                    for (let a4 of n3) {
+                      let n4 = i3?.shareScopeMap?.[a4]?.[e3];
+                      if (!S(n4, e3, t2, a4) || !r2(a4))
+                        continue;
+                      let o3 = (_b2 = (_a2 = f.shareScopeMap)[a4] || (_a2[a4] = {}))[e3] || (_b2[e3] = {});
+                      for (let [e4, t3] of Object.entries(n4))
+                        t3?.shareConfig?.import !== false && (o3[e4] && o3[e4].shareConfig?.import !== false || (o3[e4] = t3));
+                    }
+                }
+                if (n3.every(r2))
+                  return;
               }
-              if (n3.every(r2))
-                return;
+              await f.loadShare(e3, {
+                customShareInfo: {
+                  shareConfig: t2.shareConfig
+                }
+              }).then(async (e4) => {
+                if (e4 === false || o2())
+                  return;
+                let t3 = typeof e4 == `function` ? e4() : e4, n3 = m(await Promise.resolve(t3));
+                d(r.share, a3, n3, `opensmartcity`);
+              });
             }
-            await f.loadShare(e3, {
-              customShareInfo: {
-                shareConfig: t2.shareConfig
-              }
-            }).then(async (e4) => {
-              if (e4 === false)
-                return;
-              let t3 = typeof e4 == `function` ? e4() : e4, n3 = m(await Promise.resolve(t3));
-              d(r.share, a3, n3, `opensmartcity`);
-            });
-          }
-        }));
+          }));
+      } finally {
+        T();
+      }
       for (let [e2, t2] of Object.entries(p)) {
         if (!t2.lib || t2.treeShaking || t2.shareConfig?.import === false)
           continue;

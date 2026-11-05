@@ -18,8 +18,6 @@ export default [
             'src-widgets/**/*',
             'widgets/**/*',
             'docs/**/*',
-            'gulpfile.js',
-            'gulpfileWidgets.js',
             'admin/**/*',
             'node_modules/**/*',
             'test/**/*',

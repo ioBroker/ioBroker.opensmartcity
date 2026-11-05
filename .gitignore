@@ -1,5 +1,7 @@
 node_modules
 .idea
+/build
+*.tsbuildinfo
 /src/.eslintcache
 /src/.cache
 www
@@ -25,8 +27,10 @@ admin/words.js
 /src/public/js/adapter-settings-aes.js
 testSentry.bat
 /adminWww/
+/src-admin/build
 /src-widgets/build/*
 /src-widgets/node_modules/*
+/src-widgets/.__mf__temp/
 
 # ioBroker dev-server
 .dev-server/

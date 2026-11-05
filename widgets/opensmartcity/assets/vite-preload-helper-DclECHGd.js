@@ -42,7 +42,10 @@ var e = function(e2, t2) {
         let e2 = document.createElement(`link`);
         if (e2.rel = c3 ? `stylesheet` : `modulepreload`, c3 || (e2.as = `script`), e2.crossOrigin = ``, e2.href = s2.href, l && e2.setAttribute(`nonce`, l), document.head.appendChild(e2), c3)
           return new Promise((t2, n2) => {
-            e2.addEventListener(`load`, t2), e2.addEventListener(`error`, () => n2(Error(`Unable to preload CSS for ${s2}`)));
+            let r2 = (i4) => {
+              e2.removeEventListener(`load`, r2), e2.removeEventListener(`error`, r2), i4.type === `error` ? n2(Error(`Unable to preload CSS for ${s2}`)) : t2(i4);
+            };
+            e2.addEventListener(`load`, r2), e2.addEventListener(`error`, r2);
           });
       });
     }).filter((e2) => e2 !== void 0));

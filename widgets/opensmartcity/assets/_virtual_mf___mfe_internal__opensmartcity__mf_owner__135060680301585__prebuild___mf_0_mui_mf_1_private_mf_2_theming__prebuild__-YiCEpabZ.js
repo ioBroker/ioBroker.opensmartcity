@@ -15,7 +15,7 @@ var __spreadValues = (a2, b) => {
   return a2;
 };
 import {n as e} from "./rolldown-runtime-XKyaHtl9.js";
-import {T as t, a as n, d as r, y as i} from "./_virtual_mf___mfe_internal__opensmartcity__mf_owner__135060680301585__loadShare__shared-DG-3THKX.js";
+import {T as t, a as n, d as r, y as i} from "./_virtual_mf___mfe_internal__opensmartcity__mf_owner__135060680301585__loadShare__shared-U0IBWbSk.js";
 var a = r(null);
 function o() {
   return i(a);

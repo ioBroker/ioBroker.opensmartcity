@@ -16,6 +16,7 @@
     },
     "version": "0.2.3",
     "compact": true,
+    "nogit": true,
     "news": {
       "0.2.3": {
         "en": "Adapter requires js-controller >= 6.0.11 now.\nAdapter requires node.js >= 22 and admin >= 7.6.17 now\nFixed the crash when the FROST server returns its data in several pages\nUpdated packages, migrated to ESLint 9, added the standard tests (they run on Windows and macOS too)",
