@@ -11,8 +11,7 @@
 
 
 ## Changelog
-
-### **WORK IN PROGRESS**
+### 0.3.0 (2026-11-05)
 - (copilot) Adapter requires node.js >= 22.19.0 now
 - (@GermanBluefox) vis-2 widgets moved to Vite and rebuilt for React 19 and MUI 9 (vis-2 >= 2.20.2 needed), see ioBroker/ioBroker.vis-2#689
 - (@GermanBluefox) The adapter was refactored to TypeScript, the gulp build was replaced by `tasks.ts`
@@ -24,6 +23,7 @@
 <!--
     ### **WORK IN PROGRESS**
 -->
+
 ### 0.2.3 (2026-10-14)
 - (ioBroker-Bot) Adapter requires js-controller >= 6.0.11 now.
 - (@GermanBluefox) Adapter requires node.js >= 22 and admin >= 7.6.17 now
@@ -39,9 +39,6 @@
 
 ### 0.2.0 (2023-11-24)
 * (bluefox) Changed sensor structure
-
-### 0.1.2 (2023-11-22)
-* (bluefox) Added widget
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 
