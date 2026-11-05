@@ -72,8 +72,8 @@ class Options extends Component {
                 <FormControl style={{ minWidth: 200 }} variant="standard">
                     <InputLabel>{I18n.t('City')}</InputLabel>
                     <Select
-                        value={this.props.native.protocol}
-                        onChange={e => this.props.onChange('protocol', e.target.value)}
+                        value={this.props.native.city}
+                        onChange={e => this.props.onChange('city', e.target.value)}
                     >
                         <MenuItem value="Solingen">Solingen</MenuItem>
                     </Select>
