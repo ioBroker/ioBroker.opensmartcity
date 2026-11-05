@@ -86,7 +86,8 @@ async function processMessage(obj) {
     if (obj.command === 'getThings') {
         if (!lastResult) {
             const result = await getUrl("Things?$filter=properties/status ne 'decommissioned'&$expand=Datastreams");
-            if (result) {
+            // an empty list is what getUrl() returns on a connection error: do not cache it, ask the server next time again
+            if (result?.length) {
                 lastResult = result;
             }
             adapter.sendTo(obj.from, obj.command, { result }, obj.callback);
@@ -138,7 +139,10 @@ async function createStates() {
     if (!result) {
         return;
     }
-    lastResult = result;
+    // an empty list is what getUrl() returns on a connection error: do not cache it, ask the server next time again
+    if (result.length) {
+        lastResult = result;
+    }
     for (let t = 0; t < adapter.config.things.length; t++) {
         const id = adapter.config.things[t];
         const thing = result.find(item => item['@iot.id'].toString() === id);
