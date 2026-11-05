@@ -199,14 +199,14 @@ async function createStates() {
                 }
             }
 
-            const status = adapter.getObjectAsync(`${id}.status`);
+            const status = await adapter.getObjectAsync(`${id}.status`);
             if (!status) {
                 await adapter.setObjectAsync(`${id}.status`, {
                     _id: `${id}.status`,
                     type: 'state',
                     common: {
                         name: 'Status',
-                        type: 'string',
+                        type: 'boolean',
                         role: 'indicator.reachable',
                         read: true,
                         write: false,
@@ -215,7 +215,7 @@ async function createStates() {
                     native: {},
                 });
             }
-            adapter.setStateAsync(`${id}.status`, { val: thing.properties?.status === 'online', ack: true });
+            await adapter.setStateAsync(`${id}.status`, { val: thing.properties?.status === 'online', ack: true });
         }
     }
 }
