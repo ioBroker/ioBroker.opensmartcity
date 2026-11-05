@@ -11,6 +11,10 @@
 
 
 ## Changelog
+<!--
+    Placeholder for the next version (at the beginning of the line):
+    ### **WORK IN PROGRESS**
+-->
 ### 0.3.0 (2026-11-05)
 - (copilot) Adapter requires node.js >= 22.19.0 now
 - (@GermanBluefox) vis-2 widgets moved to Vite and rebuilt for React 19 and MUI 9 (vis-2 >= 2.20.2 needed), see ioBroker/ioBroker.vis-2#689
@@ -20,9 +24,6 @@
 - (@GermanBluefox) Fixed: the `status` state of a station was never created
 - (@GermanBluefox) Fixed: the list of stations in the settings stayed empty until the adapter restart, when the FROST server was not reachable at the start
 - (@GermanBluefox) Fixed: the city selector in the settings showed nothing
-<!--
-    ### **WORK IN PROGRESS**
--->
 
 ### 0.2.3 (2026-10-14)
 - (ioBroker-Bot) Adapter requires js-controller >= 6.0.11 now.
