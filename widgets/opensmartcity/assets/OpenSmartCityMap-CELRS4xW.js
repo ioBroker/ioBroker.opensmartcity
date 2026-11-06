@@ -10391,7 +10391,7 @@ var vf = class e17 {
   }
 };
 window.i18nShow = vf.i18nShow, window.i18nDisableWarning = vf.disableWarning;
-var yf = `data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20height%3D%2224%22%20viewBox%3D%220%20-960%20960%20960%22%20width%3D%2224%22%3E%0A%20%20%20%20%3Cpath%20fill%3D%22%2300F%22%20d%3D%22M360-440h80v-110h80v110h80v-190l-120-80-120%2080v190Zm120%20254q122-112%20181-203.5T720-552q0-109-69.5-178.5T480-800q-101%200-170.5%2069.5T240-552q0%2071%2059%20162.5T480-186Zm0%20106Q319-217%20239.5-334.5T160-552q0-150%2096.5-239T480-880q127%200%20223.5%2089T800-552q0%20100-79.5%20217.5T480-80Zm0-480Z%22%2F%3E%0A%3C%2Fsvg%3E`, bf = `data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20height%3D%2248%22%20viewBox%3D%220%20-960%20960%20960%22%20width%3D%2248%22%3E%0A%20%20%20%20%3Cpath%20fill%3D%22%23080%22%20d%3D%22M480-120q-75.53%200-128.765-53.235Q298-226.47%20298-302q0-49.099%2024-91.55Q346-436%20388-462v-286q0-38.333%2026.765-65.167%2026.764-26.833%2065-26.833Q518-840%20545-813.167q27%2026.834%2027%2065.167v286q42%2026%2066%2068.45%2024%2042.451%2024%2091.55%200%2075.53-53.235%20128.765Q555.53-120%20480-120Zm.118-59Q531-179%20566.5-214.875%20602-250.75%20602-302q0-37.81-18-70.405T532-420l-20-9v-319q0-13.6-9.2-22.8-9.2-9.2-22.8-9.2-13.6%200-22.8%209.2-9.2%209.2-9.2%2022.8v319l-20%209q-34%2015-52%2047.595T358-302q0%2051.25%2035.618%2087.125Q429.235-179%20480.118-179ZM480-302Z%22%2F%3E%0A%3C%2Fsvg%3E`, xf = class extends r {
+var yf = `data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20height%3D%2224%22%20viewBox%3D%220%20-960%20960%20960%22%20width%3D%2224%22%3E%0A%20%20%20%20%3Cpath%20fill%3D%22%2300F%22%20d%3D%22M360-440h80v-110h80v110h80v-190l-120-80-120%2080v190Zm120%20254q122-112%20181-203.5T720-552q0-109-69.5-178.5T480-800q-101%200-170.5%2069.5T240-552q0%2071%2059%20162.5T480-186Zm0%20106Q319-217%20239.5-334.5T160-552q0-150%2096.5-239T480-880q127%200%20223.5%2089T800-552q0%20100-79.5%20217.5T480-80Zm0-480Z%22%2F%3E%0A%3C%2Fsvg%3E`, bf = 19, xf = `data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20height%3D%2248%22%20viewBox%3D%220%20-960%20960%20960%22%20width%3D%2248%22%3E%0A%20%20%20%20%3Cpath%20fill%3D%22%23080%22%20d%3D%22M480-120q-75.53%200-128.765-53.235Q298-226.47%20298-302q0-49.099%2024-91.55Q346-436%20388-462v-286q0-38.333%2026.765-65.167%2026.764-26.833%2065-26.833Q518-840%20545-813.167q27%2026.834%2027%2065.167v286q42%2026%2066%2068.45%2024%2042.451%2024%2091.55%200%2075.53-53.235%20128.765Q555.53-120%20480-120Zm.118-59Q531-179%20566.5-214.875%20602-250.75%20602-302q0-37.81-18-70.405T532-420l-20-9v-319q0-13.6-9.2-22.8-9.2-9.2-22.8-9.2-13.6%200-22.8%209.2-9.2%209.2-9.2%2022.8v319l-20%209q-34%2015-52%2047.595T358-302q0%2051.25%2035.618%2087.125Q429.235-179%20480.118-179ZM480-302Z%22%2F%3E%0A%3C%2Fsvg%3E`, Sf = class extends r {
   constructor(e19) {
     super(e19), this.state = {longitude: 0, latitude: 0, things: [...this.props.things], mapHeight: 0, mapWidth: 0}, this.refMap = i();
   }
@@ -10413,6 +10413,13 @@ var yf = `data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F
       De(n2, [r2[0], r2[1], r2[0], r2[1]]);
     }), e19.getView().fit(n2, e19.getSize()), e19.getView().getZoom() - 1;
   }
+  getZoomLevel() {
+    return Math.min(bf, Math.max(0, Math.round(Number(this.props.zoomLevel) || 0)));
+  }
+  updateView() {
+    let e19 = this.getZoomLevel() || this.calculateZoomLevel(this.OSM.oMap);
+    this.OSM.oMap.setView(new Vl({center: this.calculateCenter(), zoom: e19}));
+  }
   calculateCenter() {
     let e19 = +!this.props.hideHome, t2 = this.props.hideHome ? 0 : parseFloat(this.state.longitude || 0), n2 = this.props.hideHome ? 0 : parseFloat(this.state.latitude || 0);
     return this.state.things.forEach((r2) => {
@@ -10431,7 +10438,7 @@ var yf = `data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F
   updateMap() {
     let e19 = Nn([parseFloat(this.state.longitude || 0), parseFloat(this.state.latitude || 0)]);
     if (!this.OSM) {
-      this.OSM = {}, this.props.hideHome || (this.OSM.markerSource = new Mo()), this.OSM.pointsSource = new Mo(), this.OSM.markerStyle = new Vo({image: new Is({anchor: [0.5, 49], anchorXUnits: `fraction`, anchorYUnits: `pixels`, opacity: 0.75, src: yf})}), this.OSM.tempStyle = new Vo({image: new Is({anchor: [0.5, 49], anchorXUnits: `fraction`, anchorYUnits: `pixels`, opacity: 0.75, src: bf})}), this.OSM.pointsLayer = new eu({source: this.OSM.pointsSource, style: this.OSM.tempStyle});
+      this.OSM = {}, this.props.hideHome || (this.OSM.markerSource = new Mo()), this.OSM.pointsSource = new Mo(), this.OSM.markerStyle = new Vo({image: new Is({anchor: [0.5, 49], anchorXUnits: `fraction`, anchorYUnits: `pixels`, opacity: 0.75, src: yf})}), this.OSM.tempStyle = new Vo({image: new Is({anchor: [0.5, 49], anchorXUnits: `fraction`, anchorYUnits: `pixels`, opacity: 0.75, src: xf})}), this.OSM.pointsLayer = new eu({source: this.OSM.pointsSource, style: this.OSM.tempStyle});
       let t2 = [new Hd({source: new _f()}), this.OSM.pointsLayer];
       this.props.hideHome || t2.push(new eu({source: this.OSM.markerSource, style: this.OSM.markerStyle})), this.OSM.oMap = new sd({target: this.props.id || `map`, layers: t2, view: new Vl({center: e19, zoom: 17})}), this.props.hideHome || (this.OSM.marker = new fe({geometry: new Br(e19), name: vf.t(`Your home`)}), this.OSM.markerSource.addFeature(this.OSM.marker)), this.OSM.oMap.on(`pointermove`, (e20) => {
         if (e20.dragging) {
@@ -10451,17 +10458,17 @@ var yf = `data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F
       t2.dataStreams.forEach((e21) => {
         console.log(e21), e21.value !== void 0 && e21.value !== null && r2.push((Math.round(e21.value * 10) / 10).toString() + (e21.unit || ``));
       });
-      let i2 = new Vo({image: new Is({anchor: [0.5, 49], anchorXUnits: `fraction`, anchorYUnits: `pixels`, opacity: 0.75, src: bf}), text: new qo({text: r2.join(`
+      let i2 = new Vo({image: new Is({anchor: [0.5, 49], anchorXUnits: `fraction`, anchorYUnits: `pixels`, opacity: 0.75, src: xf}), text: new qo({text: r2.join(`
 `), scale: 1.2, fill: new No({color: `#004f00`})})});
       n2.setStyle(i2), this.OSM.pointsSource.addFeature(n2);
     }
-    this.props.hideHome || this.OSM.marker.setGeometry(new Br(e19)), this.OSM.oMap.setView(new Vl({center: this.calculateCenter(), zoom: this.calculateZoomLevel(this.OSM.oMap)}));
+    this.props.hideHome || this.OSM.marker.setGeometry(new Br(e19)), this.updateView();
   }
   componentDidMount() {
     this.props.socket.getSystemConfig().then((e19) => this.setState({longitude: e19.common.longitude, latitude: e19.common.latitude}, () => this.refMap.current?.clientHeight && this.updateMap()));
   }
-  componentDidUpdate() {
-    this.refMap.current && this.refMap.current.clientWidth !== this.state.mapWidth && this.refMap.current.clientHeight !== this.state.mapHeight && (this.OSM ? this.setState({mapWidth: this.refMap.current.clientWidth, mapHeight: this.refMap.current.clientHeight}, () => this.OSM.oMap.updateSize()) : this.setState({mapWidth: this.refMap.current.clientWidth, mapHeight: this.refMap.current.clientHeight}, () => setTimeout(() => this.updateMap(), 10)));
+  componentDidUpdate(e19) {
+    this.OSM && e19.zoomLevel !== this.props.zoomLevel && this.updateView(), this.refMap.current && this.refMap.current.clientWidth !== this.state.mapWidth && this.refMap.current.clientHeight !== this.state.mapHeight && (this.OSM ? this.setState({mapWidth: this.refMap.current.clientWidth, mapHeight: this.refMap.current.clientHeight}, () => this.OSM.oMap.updateSize()) : this.setState({mapWidth: this.refMap.current.clientWidth, mapHeight: this.refMap.current.clientHeight}, () => setTimeout(() => this.updateMap(), 10)));
   }
   renderTooltip() {
     return this.state.tooltip ? n(`div`, {style: {position: `absolute`, top: this.state.tooltip.top, left: this.state.tooltip.left, color: `#000`, padding: `3px 5px`, backgroundColor: `#fff`, borderRadius: 5}, children: this.state.tooltip.text}, `tooltip`) : null;
@@ -10470,8 +10477,8 @@ var yf = `data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F
     return JSON.stringify(this.props.things) !== JSON.stringify(this.state.things) && this.OSM && setTimeout(() => this.setState({things: [...this.props.things]}, () => this.refMap.current?.clientWidth && this.updateMap()), 100), [n(`div`, {ref: this.refMap, id: this.props.id || `map`, style: {height: `100%`, width: `100%`, overflow: `hidden`}}, `map`), this.renderTooltip()];
   }
 };
-xf.propTypes = {id: s.default.string, socket: s.default.object, things: s.default.array, onSelect: s.default.func, hideHome: s.default.bool};
-var Sf = class e18 extends window.visRxWidget {
+Sf.propTypes = {id: s.default.string, socket: s.default.object, things: s.default.array, onSelect: s.default.func, hideHome: s.default.bool, zoomLevel: s.default.oneOfType([s.default.number, s.default.string])};
+var Cf = class e18 extends window.visRxWidget {
   constructor(e19) {
     super(e19), this.state._key = 0, this.hideHome = null;
   }
@@ -10532,11 +10539,11 @@ var Sf = class e18 extends window.visRxWidget {
   }
   renderWidgetBody(e19) {
     super.renderWidgetBody(e19), this.hideHome === null ? this.hideHome = this.state.rxData.hideHome : this.hideHome !== this.state.rxData.hideHome && (this.hideHome = this.state.rxData.hideHome, setTimeout(() => this.setState({_key: this.state._key + 1}), 100));
-    let t2 = n(xf, {socket: this.props.context.socket, id: `map_${this.props.id}`, things: this.state.points || [], hideHome: this.state.rxData.hideHome}, this.state._key);
+    let t2 = n(Sf, {socket: this.props.context.socket, id: `map_${this.props.id}`, things: this.state.points || [], hideHome: this.state.rxData.hideHome, zoomLevel: this.state.rxData.zoomLevel}, this.state._key);
     return this.state.rxData.noCard ? t2 : this.wrapContent(t2);
   }
 };
-Sf.propTypes = {context: s.default.object, themeType: s.default.string, style: s.default.object, data: s.default.object};
+Cf.propTypes = {context: s.default.object, themeType: s.default.string, style: s.default.object, data: s.default.object};
 export {
-  Sf as default
+  Cf as default
 };

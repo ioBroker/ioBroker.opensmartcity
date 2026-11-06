@@ -20,6 +20,9 @@ const HomeSVG = `data:image/svg+xml;utf8,${encodeURIComponent(`<svg xmlns="http:
     <path fill="#00F" d="M360-440h80v-110h80v110h80v-190l-120-80-120 80v190Zm120 254q122-112 181-203.5T720-552q0-109-69.5-178.5T480-800q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186Zm0 106Q319-217 239.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-79.5 217.5T480-80Zm0-480Z"/>
 </svg>`)}`;
 
+/** The highest zoom level the tiles of OpenStreetMap have */
+const MAX_ZOOM = 19;
+
 const TempSVG = `data:image/svg+xml;utf8,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48">
     <path fill="#080" d="M480-120q-75.53 0-128.765-53.235Q298-226.47 298-302q0-49.099 24-91.55Q346-436 388-462v-286q0-38.333 26.765-65.167 26.764-26.833 65-26.833Q518-840 545-813.167q27 26.834 27 65.167v286q42 26 66 68.45 24 42.451 24 91.55 0 75.53-53.235 128.765Q555.53-120 480-120Zm.118-59Q531-179 566.5-214.875 602-250.75 602-302q0-37.81-18-70.405T532-420l-20-9v-319q0-13.6-9.2-22.8-9.2-9.2-22.8-9.2-13.6 0-22.8 9.2-9.2 9.2-9.2 22.8v319l-20 9q-34 15-52 47.595T358-302q0 51.25 35.618 87.125Q429.235-179 480.118-179ZM480-302Z"/>
 </svg>`)}`;
@@ -105,6 +108,17 @@ class OlMap extends Component {
 
         // Return the zoom level of the map after fitting
         return map.getView().getZoom() - 1;
+    }
+
+    /** The zoom level of the settings; 0 (or empty) means: all stations (and home) fit into the map */
+    getZoomLevel() {
+        return Math.min(MAX_ZOOM, Math.max(0, Math.round(Number(this.props.zoomLevel) || 0)));
+    }
+
+    /** Centres the map on the stations - in the zoom level of the settings or so that all of them fit in */
+    updateView() {
+        const zoom = this.getZoomLevel() || this.calculateZoomLevel(this.OSM.oMap);
+        this.OSM.oMap.setView(new View({ center: this.calculateCenter(), zoom }));
     }
 
     calculateCenter() {
@@ -263,7 +277,7 @@ class OlMap extends Component {
         if (!this.props.hideHome) {
             this.OSM.marker.setGeometry(new Point(center));
         }
-        this.OSM.oMap.setView(new View({ center: this.calculateCenter(), zoom: this.calculateZoomLevel(this.OSM.oMap) }));
+        this.updateView();
     }
 
     componentDidMount() {
@@ -275,7 +289,12 @@ class OlMap extends Component {
                 }, () => this.refMap.current?.clientHeight && this.updateMap()));
     }
 
-    componentDidUpdate(/* prevProps, prevState, snapshot */) {
+    componentDidUpdate(prevProps /* , prevState, snapshot */) {
+        // a new zoom level in the settings: only the section changes, the points stay
+        if (this.OSM && prevProps.zoomLevel !== this.props.zoomLevel) {
+            this.updateView();
+        }
+
         if (this.refMap.current &&
             this.refMap.current.clientWidth !== this.state.mapWidth &&
             this.refMap.current.clientHeight !== this.state.mapHeight
@@ -343,6 +362,7 @@ OlMap.propTypes = {
     things: PropTypes.array,
     onSelect: PropTypes.func,
     hideHome: PropTypes.bool,
+    zoomLevel: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export default OlMap;

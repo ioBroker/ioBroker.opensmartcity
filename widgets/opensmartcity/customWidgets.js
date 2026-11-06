@@ -48,7 +48,7 @@ let __tla = (async () => {
   var c = {
     "./OpenSmartCityMap": async () => {
       await s(`./OpenSmartCityMap`), await Promise.all([]);
-      let e2 = await o(`./OpenSmartCityMap`, () => n(() => import("./assets/OpenSmartCityMap-Dd2MAB0k.js").then(async (m2) => {
+      let e2 = await o(`./OpenSmartCityMap`, () => n(() => import("./assets/OpenSmartCityMap-CELRS4xW.js").then(async (m2) => {
         await m2.__tla;
         return m2;
       }), __vite__mapDeps([0]), import.meta.url)), t2 = e2 && e2.__mf_remote_dependency_pending;
