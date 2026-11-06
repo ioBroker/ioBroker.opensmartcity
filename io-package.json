@@ -141,6 +141,9 @@
         ]
       }
     },
+    "webComponents": [
+      "webcomponents/opensmartcity-map.json"
+    ],
     "tier": 3,
     "licenseInformation": {
       "type": "free",

@@ -4,35 +4,38 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-`iobroker.opensmartcity` reads sensor data from a FROST server (OGC SensorThings API v1.1, default: the server of the city of Solingen) and mirrors the selected "things" (stations) with their data streams as ioBroker channels/states. It also ships a vis-2 widget (`OpenSmartCityMap`) that shows the stations on an OpenStreetMap map.
+`iobroker.opensmartcity` reads sensor data from a FROST server (OGC SensorThings API v1.1, default: the server of the city of Solingen) and mirrors the selected "things" (stations) with their data streams as ioBroker channels/states. It also ships a vis-2 widget (`OpenSmartCityMap`) that shows the stations on an OpenStreetMap map, and the same map as the web component `<iob-opensmartcity-map>` for Aura, admin, devices and every other host of `@iobroker/web-components`.
 
-TypeScript backend (CommonJS output). Sources live in `src/`, the runnable code is the compiled `build/` (`package.json` `main` is `build/main.js`). `build/` is gitignored — run the build before starting the adapter or the integration tests. The settings dialog (`src-admin/`) and the widgets (`src-widgets/`) are separate Vite/React apps whose build output **is committed** in `admin/` and `widgets/opensmartcity/`.
+TypeScript backend (CommonJS output). Sources live in `src/`, the runnable code is the compiled `build/` (`package.json` `main` is `build/main.js`). `build/` is gitignored — run the build before starting the adapter or the integration tests. The settings dialog (`src-admin/`) and the widgets (`src-widgets/`) are separate Vite/React apps, the web component (`src-webcomponents/`) a separate Vite build; their build output **is committed** in `admin/`, `widgets/opensmartcity/` and `admin/webcomponents/`.
 
 ## Commands
 
 ```bash
 npm run build-backend                     # tsc -p tsconfig.build.json  -> build/
-npm run build                             # backend + admin + widgets (tasks.ts)
+npm run build                             # backend + admin + widgets + web component (tasks.ts)
 npm run build-admin                       # src-admin -> admin/ (clean, npm i, tsc + vite build, copy, patch index_m.html)
 npm run build-widgets                     # src-widgets -> widgets/opensmartcity/ (clean, npm i, tsc + vite build, copy)
+npm run build-wc                          # src-webcomponents -> admin/webcomponents/ (module + manifest, checked by checkManifest)
 npm run 0-clean / 1-npm / 2-build / 3-copy / 4-patch                  # single steps of the admin build
 npm run 0-widget-clean / 1-widget-npm / 2-widget-build / 3-widget-copy  # single steps of the widget build
 npm run watch                             # backend in watch mode
 npm run check                             # type check of src/ and tasks.ts (tsconfig.json, noEmit)
 npm run check-admin                       # type check of src-admin (needs src-admin/node_modules)
+npm run check-wc                          # type check of src-webcomponents (needs src-webcomponents/node_modules)
 npm run lint                              # eslint of src/ and tasks.ts (@iobroker/eslint-config, flat config)
 npm run lint-admin                        # eslint of src-admin
+npm run lint-wc                           # eslint of src-webcomponents
 npx eslint -c eslint.config.mjs --fix src # autofix + prettier formatting
 cd src-admin && npm start                 # vite dev server on :3000 against the admin on :8081, open http://localhost:3000/?0
 
 npm run test:package                      # validates package.json / io-package.json / admin JSON (fast, downloads the schema)
 npm run test:integration                  # js-controller + adapter, needs build/ and NO running js-controller on the machine
 npm run test:widgets                      # vis-2 + browser test of the widgets (@iobroker/vis-2-widgets-testing, not in CI)
-npm run npm                               # npm i in the root, src-admin and src-widgets
+npm run npm                               # npm i in the root, src-admin, src-widgets and src-webcomponents
 npm run release-patch                     # @alcalzone/release-script, moves README changelog into io-package news
 ```
 
-There is deliberately **no `prepare` script** — `npm ci`/`npm install` does not build. Because `build/` is neither committed nor built on install, `common.nogit` is `true` in `io-package.json`: the adapter can only be installed from npm, not from GitHub. CI builds only the backend (`build-command: npm run build-backend`), because admin and widgets are committed — after a change in `src-admin/` or `src-widgets/` run `npm run build-admin` / `npm run build-widgets` and commit the output.
+There is deliberately **no `prepare` script** — `npm ci`/`npm install` does not build. Because `build/` is neither committed nor built on install, `common.nogit` is `true` in `io-package.json`: the adapter can only be installed from npm, not from GitHub. CI builds only the backend (`build-command: npm run build-backend`), because admin and widgets are committed — after a change in `src-admin/`, `src-widgets/` or `src-webcomponents/` run `npm run build-admin` / `npm run build-widgets` / `npm run build-wc` and commit the output. The admin build empties `admin/` except the icon and `admin/webcomponents/`.
 
 ## Architecture
 
@@ -43,6 +46,7 @@ There is deliberately **no `prepare` script** — `npm ci`/`npm install` does no
 | `src/lib/adapter-config.d.ts` | augments `ioBroker.AdapterConfig` — hand-maintained, keep in sync with `native` in io-package.json and `src-admin/src/types.ts` |
 | `src-admin/` | settings dialog (`admin/index_m.html`, `adminUI.config: materialize`): Vite, TypeScript, React 19, MUI 9, `@iobroker/gui-components` 10, OpenLayers. Tabs "Options" (connection) and "Sensors" (selected things, values, map) |
 | `src-widgets/` | vis-2 widget set (Vite + `@module-federation/vite`); name, filename and exposes must match `common.visWidgets` in io-package.json |
+| `src-webcomponents/` | web component `<iob-opensmartcity-map>` (`@iobroker/web-components`): plain DOM + Leaflet and its CSS in one ES module, no React, no MUI. Builds `admin/webcomponents/opensmartcity-map.js` and its manifest `.json` (listed in `common.webComponents`); the manifest name is read from `src-widgets/src/i18n/*.json` (`OpenSmartCityMap`), so vis-2 and devices hide the component where the native widget exists |
 | `tasks.ts` | build steps (`@iobroker/build-tools`), run with `tsx` |
 
 ### Backend flow

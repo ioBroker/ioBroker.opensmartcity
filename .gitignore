@@ -31,6 +31,10 @@ testSentry.bat
 /src-widgets/build/*
 /src-widgets/node_modules/*
 /src-widgets/.__mf__temp/
+# the web component: built with vite, the result is committed in admin/webcomponents/ (tasks.ts --wc-build)
+/src-webcomponents/node_modules/
+/src-webcomponents/build/
+/src-webcomponents/package-lock.json
 
 # ioBroker dev-server
 .dev-server/
