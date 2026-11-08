@@ -14,10 +14,23 @@
       "uk": "OpenSmartCity FROST",
       "zh-cn": "OpenSmartCity FROST"
     },
-    "version": "0.3.0",
+    "version": "0.4.0",
     "compact": true,
     "nogit": true,
     "news": {
+      "0.4.0": {
+        "en": "Added the web component `<iob-opensmartcity-map>` - the map of the stations with their latest values - for Aura, admin and other hosts of `@iobroker/web-components` (`common.webComponents`)\nvis-2 widget: the setting \"Zoom level\" works now (0 = all stations fit into the map)",
+        "de": "Die Web-Komponente <iob-opensmartcity-map>`- die Karte der Stationen mit den aktuellen Werten - für Aura, Admin und andere Hosts von` @iobroker /web-components `(`common.WebComponents`) hinzugefügt\nVis-2-Widget: Die Zoomstufe gilt jetzt (0 = alle Stationen passen in die Karte)",
+        "ru": "Добавлен веб-компонент `<iob-opensmartcity-map>` — карта станций с последними значениями — для Aura, администратора и других хостов `@iobroker /web-components` (`Common.webcomponents`)\nвиджет vis-2: теперь работает настройка «Уровень масштабирования» (0 = все станции помещаются на карту)",
+        "pt": "Adicionado o componente web <iob-opensmartcity-map>`` - o mapa das estações com seus últimos valores - para Aura, admin e outros hosts de `@iobroker /web-components`\nwidget vis-2: o nível de zoom funciona agora (0 = todas as estações cabem no mapa)",
+        "nl": "De webcomponent `<iob-opensmartcity-map>` - de kaart van de stations met hun laatste waarden - toegevoegd voor Aura, admin en andere hosts van `@iobroker /web-components` (`Common.WebComponents`)\nvis-2-widget: de instelling „Zoomniveau” werkt nu (0 = alle stations passen op de kaart)",
+        "fr": "Ajout du composant Web `<iob-opensmartcity-map>`, la carte des stations avec leurs dernières valeurs, pour Aura, admin et les autres hébergeurs de `@iobroker /web-components` (`common.WebComponents`)\nwidget vis-2 : le réglage « Zoom » fonctionne (0 = toutes les stations sont sur la carte)",
+        "it": "Aggiunto il componente web `<iob-opensmartcity-map>` - la mappa delle stazioni con i valori più recenti - per Aura, admin e altri host di @iobroker /web-components (`common.WebComponents`)\nwidget vis-2: ora funziona «Livello di zoom» (0 = tutte le stazioni sulla mappa)",
+        "es": "Se ha añadido el componente web `<iob-opensmartcity-map>`, el mapa de las estaciones con sus últimos valores, para Aura, admin y otros hosts de `@iobroker /web-components` (`Common.WebComponents`)\nwidget vis-2: el ajuste «Nivel de zoom» ya funciona (0 = todas las estaciones caben en el mapa)",
+        "pl": "Dodano komponent internetowy `<iob-opensmartcity-map>` - mapę stacji z ich najnowszymi wartościami - dla Aura, admin i innych hostów `@iobroker /web-components` (`common.webcomponents`)\nwidżet vis-2: ustawienie „Poziom powiększenia” działa teraz (0 = wszystkie stacje pasują do mapy)",
+        "uk": "Додано веб-компонент `<iob-opensmartcity-map>` - карта станцій з їх останніми значеннями - для Aura, admin та інших хостів `@iobroker /web-components` (`Common.WebComponents`)\nвіджет vis-2: настройка «Рівень масштабування» працює зараз (0 = всі станції вписуються в карту)",
+        "zh-cn": "为 <iob-opensmartcity-map>Aura、管理员和其他主机 @iobroker /web-components (`common.webComponents`) 添加了网络组件 ``（带有最新值的站点地图）\nvis-2 插件：“缩放级别” 设置现在可以使用（0 = 所有站点都适合地图）"
+      },
       "0.3.0": {
         "en": "* Adapter requires node.js >= 22.19.0 now\n* vis-2 widgets moved to Vite and rebuilt for React 19 and MUI 9 (vis-2 >= 2.20.2 needed), see ioBroker/ioBroker.vis-2#689\n* The adapter was refactored to TypeScript, the gulp build was replaced by `tasks.ts`\n* The settings dialog was moved to Vite, React 19, MUI 9 and `@iobroker/gui-components`\n* The adapter can be installed only from npm now, not directly from GitHub\n* Fixed: the `status` state of a station was never created\n* Fixed: the list of stations in the settings stayed empty until the adapter restart, when the FROST server was not reachable at the start\n* Fixed: the city selector in the settings showed nothing",
         "de": "* Der Adapter benötigt jetzt node.js >= 22.19.0\n* Die vis-2-Widgets wurden auf Vite umgestellt und für React 19 und MUI 9 neu gebaut (vis-2 >= 2.20.2 nötig), siehe ioBroker/ioBroker.vis-2#689\n* Der Adapter wurde auf TypeScript umgestellt, der gulp-Build wurde durch `tasks.ts` ersetzt\n* Der Einstellungsdialog wurde auf Vite, React 19, MUI 9 und `@iobroker/gui-components` umgestellt\n* Der Adapter kann jetzt nur noch über npm installiert werden, nicht mehr direkt von GitHub\n* Behoben: Der `status`-State einer Station wurde nie angelegt\n* Behoben: Die Liste der Stationen in den Einstellungen blieb bis zum Neustart des Adapters leer, wenn der FROST-Server beim Start nicht erreichbar war\n* Behoben: Die Stadtauswahl in den Einstellungen zeigte nichts an",
