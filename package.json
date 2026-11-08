@@ -61,11 +61,14 @@
     "build-backend": "tsc -p tsconfig.build.json",
     "build-admin": "tsx tasks.ts --admin-build",
     "build-widgets": "tsx tasks.ts --widget-build",
+    "build-wc": "tsx tasks.ts --wc-build",
     "watch": "tsc -p tsconfig.build.json --watch",
     "check": "tsc -p tsconfig.json --noEmit",
     "check-admin": "cd src-admin && npm run check-ts",
+    "check-wc": "cd src-webcomponents && npm run check-ts",
     "lint": "eslint -c eslint.config.mjs",
     "lint-admin": "cd src-admin && npm run lint",
+    "lint-wc": "cd src-webcomponents && npm run lint",
     "0-clean": "tsx tasks.ts --0-clean",
     "1-npm": "tsx tasks.ts --1-npm",
     "2-build": "tsx tasks.ts --2-build",
@@ -83,7 +86,7 @@
     "release-patch": "release-script patch --yes",
     "release-minor": "release-script minor --yes",
     "release-major": "release-script major --yes",
-    "update-packages": "npx -y npm-check-updates --upgrade && cd src-admin && npx -y npm-check-updates --upgrade && cd .. && cd src-widgets && npx -y npm-check-updates --upgrade",
-    "npm": "npm i && cd src-admin && npm i -f && cd ../src-widgets && npm i -f && cd .."
+    "update-packages": "npx -y npm-check-updates --upgrade && cd src-admin && npx -y npm-check-updates --upgrade && cd .. && cd src-widgets && npx -y npm-check-updates --upgrade && cd ../src-webcomponents && npx -y npm-check-updates --upgrade",
+    "npm": "npm i && cd src-admin && npm i -f && cd ../src-widgets && npm i -f && cd ../src-webcomponents && npm i && cd .."
   }
 }

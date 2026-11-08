@@ -1,0 +1,151 @@
+{
+    "$schema": "https://raw.githubusercontent.com/ioBroker/web-components/main/schemas/manifest.json",
+    "manifestVersion": 1,
+    "tag": "iob-opensmartcity-map",
+    "name": {
+        "en": "Open Smart City Map",
+        "de": "Open Smart City Karte",
+        "ru": "Open Smart City Карта",
+        "pt": "Open Smart City Map",
+        "nl": "Open Smart City Map",
+        "fr": "Open Smart City Map",
+        "it": "Open Smart City Map",
+        "es": "Open Smart City Map",
+        "pl": "Open Smart City Map",
+        "uk": "Open Smart City Map",
+        "zh-cn": "Open Smart City Map"
+    },
+    "description": {
+        "en": "The stations of an OpenSmartCity instance with their latest values on an OpenStreetMap map",
+        "de": "Die Stationen einer OpenSmartCity-Instanz mit ihren aktuellen Werten auf einer OpenStreetMap-Karte",
+        "ru": "Станции экземпляра OpenSmartCity с их последними значениями на карте OpenStreetMap",
+        "pt": "As estações de uma instância do OpenSmartCity com os seus valores mais recentes num mapa do OpenStreetMap",
+        "nl": "De stations van een OpenSmartCity-instantie met hun laatste waarden op een OpenStreetMap-kaart",
+        "fr": "Les stations d'une instance OpenSmartCity avec leurs dernières valeurs sur une carte OpenStreetMap",
+        "it": "Le stazioni di un'istanza OpenSmartCity con i loro valori più recenti su una mappa OpenStreetMap",
+        "es": "Las estaciones de una instancia de OpenSmartCity con sus últimos valores en un mapa de OpenStreetMap",
+        "pl": "Stacje instancji OpenSmartCity z ich najnowszymi wartościami na mapie OpenStreetMap",
+        "uk": "Станції екземпляра OpenSmartCity з їхніми останніми значеннями на карті OpenStreetMap",
+        "zh-cn": "OpenSmartCity 实例的站点及其最新数值，显示在 OpenStreetMap 地图上"
+    },
+    "icon": "../opensmartcity.png",
+    "module": "opensmartcity-map.js",
+    "size": {
+        "width": 400,
+        "height": 300
+    },
+    "settings": {
+        "type": "panel",
+        "items": {
+            "instance": {
+                "type": "instance",
+                "adapter": "opensmartcity",
+                "label": {
+                    "en": "Instance",
+                    "de": "Instanz",
+                    "ru": "Экземпляр",
+                    "pt": "Instância",
+                    "nl": "Instantie",
+                    "fr": "Instance",
+                    "it": "Istanza",
+                    "es": "Instancia",
+                    "pl": "Instancja",
+                    "uk": "Екземпляр",
+                    "zh-cn": "实例"
+                }
+            },
+            "title": {
+                "type": "text",
+                "label": {
+                    "en": "Title",
+                    "de": "Titel",
+                    "ru": "Заголовок",
+                    "pt": "Título",
+                    "nl": "Titel",
+                    "fr": "Titre",
+                    "it": "Titolo",
+                    "es": "Título",
+                    "pl": "Tytuł",
+                    "uk": "Заголовок",
+                    "zh-cn": "标题"
+                },
+                "help": {
+                    "en": "Shown above the map; empty: no title",
+                    "de": "Über der Karte angezeigt; leer: kein Titel",
+                    "ru": "Показывается над картой; пусто: без заголовка",
+                    "pt": "Exibido acima do mapa; vazio: sem título",
+                    "nl": "Boven de kaart getoond; leeg: geen titel",
+                    "fr": "Affiché au-dessus de la carte ; vide : pas de titre",
+                    "it": "Mostrato sopra la mappa; vuoto: nessun titolo",
+                    "es": "Se muestra encima del mapa; vacío: sin título",
+                    "pl": "Wyświetlany nad mapą; puste: bez tytułu",
+                    "uk": "Показується над картою; порожньо: без заголовка",
+                    "zh-cn": "显示在地图上方；为空时不显示标题"
+                }
+            },
+            "hideHome": {
+                "type": "checkbox",
+                "default": false,
+                "label": {
+                    "en": "Hide home",
+                    "de": "Zuhause nicht zeigen",
+                    "ru": "Скрыть дом",
+                    "pt": "Ocultar casa",
+                    "nl": "Thuis verbergen",
+                    "fr": "Masquer le domicile",
+                    "it": "Nascondi casa",
+                    "es": "Ocultar casa",
+                    "pl": "Ukryj dom",
+                    "uk": "Приховати дім",
+                    "zh-cn": "隐藏家"
+                },
+                "help": {
+                    "en": "Do not show the location of ioBroker from the system settings",
+                    "de": "Den Standort von ioBroker aus den Systemeinstellungen nicht zeigen",
+                    "ru": "Не показывать местоположение ioBroker из системных настроек",
+                    "pt": "Não mostrar a localização do ioBroker das configurações do sistema",
+                    "nl": "De locatie van ioBroker uit de systeeminstellingen niet tonen",
+                    "fr": "Ne pas afficher l'emplacement d'ioBroker défini dans les paramètres système",
+                    "it": "Non mostrare la posizione di ioBroker dalle impostazioni di sistema",
+                    "es": "No mostrar la ubicación de ioBroker de la configuración del sistema",
+                    "pl": "Nie pokazuj lokalizacji ioBrokera z ustawień systemowych",
+                    "uk": "Не показувати місцезнаходження ioBroker із системних налаштувань",
+                    "zh-cn": "不显示系统设置中的 ioBroker 位置"
+                }
+            },
+            "zoomLevel": {
+                "type": "slider",
+                "min": 0,
+                "max": 19,
+                "step": 1,
+                "default": 0,
+                "label": {
+                    "en": "Zoom level",
+                    "de": "Zoomstufe",
+                    "ru": "Уровень масштабирования",
+                    "pt": "Nível de zoom",
+                    "nl": "Zoomniveau",
+                    "fr": "Niveau de zoom",
+                    "it": "Livello di zoom",
+                    "es": "Nivel de zoom",
+                    "pl": "Poziom przybliżenia",
+                    "uk": "Рівень масштабування",
+                    "zh-cn": "缩放级别"
+                },
+                "help": {
+                    "en": "0: all stations fit into the map",
+                    "de": "0: alle Stationen passen in die Karte",
+                    "ru": "0: все станции помещаются на карте",
+                    "pt": "0: todas as estações cabem no mapa",
+                    "nl": "0: alle stations passen op de kaart",
+                    "fr": "0 : toutes les stations tiennent dans la carte",
+                    "it": "0: tutte le stazioni entrano nella mappa",
+                    "es": "0: todas las estaciones caben en el mapa",
+                    "pl": "0: wszystkie stacje mieszczą się na mapie",
+                    "uk": "0: усі станції вміщуються на карті",
+                    "zh-cn": "0：所有站点都显示在地图中"
+                }
+            }
+        }
+    }
+}

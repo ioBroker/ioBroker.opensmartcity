@@ -197,6 +197,7 @@ class OpenSmartCityMap extends window.visRxWidget {
             id={`map_${this.props.id}`}
             things={this.state.points || []}
             hideHome={this.state.rxData.hideHome}
+            zoomLevel={this.state.rxData.zoomLevel}
         />;
 
         if (!this.state.rxData.noCard) {

@@ -1,10 +1,11 @@
 /*!
  * ioBroker build tasks, replaces gulpfile.js and gulpfileWidgets.js
  *
- *   tsx tasks.ts                  backend + admin + widgets
+ *   tsx tasks.ts                  backend + admin + widgets + web component
  *   tsx tasks.ts --backend-build  only the backend (src/ -> build/), same as `npm run build-backend`
  *   tsx tasks.ts --admin-build    only the admin (src-admin/ -> admin/)
  *   tsx tasks.ts --widget-build   only the vis-2 widgets (src-widgets/ -> widgets/opensmartcity/)
+ *   tsx tasks.ts --wc-build       only the web component (src-webcomponents/ -> admin/webcomponents/)
  *
  * The single steps (--0-clean ... --4-patch for the admin, --0-widget-clean ... --3-widget-copy for the widgets)
  * exist to repeat exactly one stage when a GUI build fails.
@@ -18,6 +19,9 @@ import { name } from './package.json';
 const adapterName = name.replace('iobroker.', '');
 const srcAdmin = `${__dirname}/src-admin/`;
 const srcWidgets = `${__dirname}/src-widgets/`;
+const srcWebComponents = `${__dirname}/src-webcomponents/`;
+/** Served as `/adapter/opensmartcity/webcomponents/`; must match `common.webComponents` in io-package.json */
+const webComponentsDest = 'admin/webcomponents/';
 
 // --------------------------------------- backend ---------------------------------------
 /** Compile the adapter backend: src/*.ts => build/*.js */
@@ -39,8 +43,9 @@ function buildBackend(): Promise<void> {
 
 // ---------------------------------------- admin ----------------------------------------
 function cleanAdmin(): void {
-    // admin/ holds only the build output of src-admin/ and the adapter icon
-    deleteFoldersRecursive(`${__dirname}/admin`, [`${adapterName}.png`]);
+    // admin/ holds only the build output of src-admin/, the adapter icon and the web component, which has a build
+    // of its own (--wc-build)
+    deleteFoldersRecursive(`${__dirname}/admin`, [`${adapterName}.png`, 'webcomponents']);
     deleteFoldersRecursive(`${srcAdmin}build`);
 }
 
@@ -117,6 +122,24 @@ async function widgetBuild(): Promise<void> {
     copyAllFilesWidgets();
 }
 
+// ------------------------------------ web component ------------------------------------
+/**
+ * Builds the web component `<iob-opensmartcity-map>`: one ES module and its manifest (`opensmartcity-map.js`,
+ * `opensmartcity-map.json`) for Aura, admin and every other host of `@iobroker/web-components`. The build fails if
+ * the manifest does not pass `checkManifest`. The destination is emptied first, so no module of an earlier build is
+ * published with the next release.
+ */
+async function webComponentsBuild(): Promise<void> {
+    deleteFoldersRecursive(`${__dirname}/${webComponentsDest}`);
+    deleteFoldersRecursive(`${srcWebComponents}build`);
+    if (!existsSync(`${srcWebComponents}node_modules`)) {
+        await npmInstall(srcWebComponents);
+    }
+    // `rootDir` is the folder itself: the version of the adapter is not copied into its package.json
+    await buildReact(srcWebComponents, { rootDir: srcWebComponents, vite: true });
+    copyFiles(['src-webcomponents/build/*.js', 'src-webcomponents/build/*.json'], webComponentsDest);
+}
+
 // ---------------------------------------- tasks ----------------------------------------
 function onError(e: unknown): never {
     console.error(`Cannot build: ${e as Error}`);
@@ -147,9 +170,12 @@ if (process.argv.includes('--backend-build')) {
     copyAllFilesWidgets();
 } else if (process.argv.includes('--widget-build')) {
     widgetBuild().catch(onError);
+} else if (process.argv.includes('--wc-build')) {
+    webComponentsBuild().catch(onError);
 } else {
     buildBackend()
         .then(() => adminBuild())
         .then(() => widgetBuild())
+        .then(() => webComponentsBuild())
         .catch(onError);
 }

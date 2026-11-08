@@ -15,6 +15,10 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+- (@GermanBluefox) Added the web component `<iob-opensmartcity-map>` - the map of the stations with their latest values - for Aura, admin and other hosts of `@iobroker/web-components` (`common.webComponents`)
+- (@GermanBluefox) vis-2 widget: the setting "Zoom level" works now (0 = all stations fit into the map)
+
 ### 0.3.0 (2026-11-05)
 - (copilot) Adapter requires node.js >= 22.19.0 now
 - (@GermanBluefox) vis-2 widgets moved to Vite and rebuilt for React 19 and MUI 9 (vis-2 >= 2.20.2 needed), see ioBroker/ioBroker.vis-2#689
