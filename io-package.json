@@ -14,10 +14,23 @@
       "uk": "OpenSmartCity FROST",
       "zh-cn": "OpenSmartCity FROST"
     },
-    "version": "0.4.1",
+    "version": "0.4.2",
     "compact": true,
     "nogit": true,
     "news": {
+      "0.4.2": {
+        "en": "Removed the adapter from its own dependencies. It slipped into 0.4.1, which was therefore not published - this release brings its vis-2 widget fix",
+        "de": "Hat den Adapter aus seinen Abhängigkeiten entfernt. Es kam zu 0.4.1, also nicht veröffentlicht — diese Version behebt das Vis-2-Widget",
+        "ru": "Убрал адаптер из его собственных зависимостей. Он перешел на версию 0.4.1, которая, следовательно, не была опубликована — в этой версии исправлен виджет vis-2",
+        "pt": "Removeu o adaptador de suas dependências. Caiu para a 0.4.1, que não foi publicada - esta versão traz a correção do widget vis-2",
+        "nl": "De adapter is verwijderd uit zijn eigen afhankelijkheden. Het is overgegaan naar 0.4.1, wat daarom niet werd gepubliceerd. In deze release is de vis-2 widgetfix toegevoegd",
+        "fr": "L'adaptateur a été retiré de ses dépendances. Il est passé à la version 0.4.1, qui n'a donc pas été publiée. Cette version corrige le widget Vis-2",
+        "it": "Rimosso l'adattatore dalle dipendenze. È passato alla 0.4.1, che quindi non è stata pubblicata. Questa versione corregge il widget vis-2",
+        "es": "Quitó el adaptador de sus propias dependencias. Pasó a la 0.4.1, que por lo tanto no se publicó. Esta versión trae su solución de widgets vis-2",
+        "pl": "Usunięto adapter z własnych zależności. Wpadł do 0.4.1, który dlatego nie został opublikowany - to wydanie wprowadza poprawkę widżetu vis-2",
+        "uk": "Видаляв адаптер з власних залежностей. Він потрапив до 0.4.1, який тому не був опублікований - цей випуск приносить виправлення віджету vis-2",
+        "zh-cn": "已将适配器从其自身的依赖项中移除。它进入了 0.4.1，因此尚未发布——此版本修复了 vis-2 小部件"
+      },
       "0.4.1": {
         "en": "vis-2 widget: the widget set loads again. vis-2 2.20 loaded it as a classic script, which cannot run the ES module that Vite builds",
         "de": "vis-2 Widget: Das Widget-Set wird wieder geladen. vis-2 2.20 hat es als klassisches Skript geladen, das Vite baut",
@@ -95,19 +108,6 @@
         "pl": "Poprawka wizowa 2",
         "uk": "Corrected vis-2 віджет",
         "zh-cn": "更正"
-      },
-      "0.2.0": {
-        "en": "Changed sensor structure",
-        "de": "Geänderte Sensorstruktur",
-        "ru": "Изменена структура датчика",
-        "pt": "Estrutura do sensor alterada",
-        "nl": "Veranderde sensorstructuur",
-        "fr": "Structure du capteur modifiée",
-        "it": "Struttura del sensore modificata",
-        "es": "Estructura de sensores modificada",
-        "pl": "Zmienił strukturę czujnika",
-        "uk": "Зміна структури датчика",
-        "zh-cn": "改变传感器结构"
       }
     },
     "authors": [

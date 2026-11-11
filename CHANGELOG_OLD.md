@@ -1,4 +1,8 @@
 # Older changes
+## 0.2.2 (2024-03-12)
+* (bluefox) Corrected readme link
+* (bluefox) Packages were updated
+
 ## 0.2.1 (2023-11-28)
 * (bluefox) Corrected vis-2 widget
 

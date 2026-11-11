@@ -15,7 +15,7 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.4.2 (2026-11-11)
 - (@GermanBluefox) Removed the adapter from its own dependencies. It slipped into 0.4.1, which was therefore not published - this release brings its vis-2 widget fix
 
 ### 0.4.1 (2026-11-11)
@@ -40,10 +40,6 @@
 - (@GermanBluefox) Adapter requires node.js >= 22 and admin >= 7.6.17 now
 - (@GermanBluefox) Fixed the crash when the FROST server returns its data in several pages
 - (@GermanBluefox) Updated packages, migrated to ESLint 9, added the standard tests (they run on Windows and macOS too)
-
-### 0.2.2 (2024-03-12)
-* (bluefox) Corrected readme link
-* (bluefox) Packages were updated
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 
