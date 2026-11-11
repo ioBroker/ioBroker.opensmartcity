@@ -14,10 +14,23 @@
       "uk": "OpenSmartCity FROST",
       "zh-cn": "OpenSmartCity FROST"
     },
-    "version": "0.4.0",
+    "version": "0.4.1",
     "compact": true,
     "nogit": true,
     "news": {
+      "0.4.1": {
+        "en": "vis-2 widget: the widget set loads again. vis-2 2.20 loaded it as a classic script, which cannot run the ES module that Vite builds",
+        "de": "vis-2 Widget: Das Widget-Set wird wieder geladen. vis-2 2.20 hat es als klassisches Skript geladen, das Vite baut",
+        "ru": "виджет vis-2: набор виджетов снова загружается. vis-2 2.20 загрузил его как классический скрипт, который не может запускать модуль ES, созданный Vite",
+        "pt": "vis-2: o conjunto de widgets carrega novamente. O vis-2 2.20 o carregou como um script clássico, que não roda o módulo ES",
+        "nl": "vis-2 widget: de widgetset wordt opnieuw geladen. vis-2 2.20 heeft de widgetset geladen als een klassiek script, dat de ES-module die Vite bouwt niet kan uitvoeren",
+        "fr": "widget vis-2 : le jeu de widgets se recharge. vis-2 2.20 l'a chargé en script classique, mais ne peut pas exécuter le module ES créé par Vite",
+        "it": "vis-2 2.20 lo ha caricato come script classico, che non può eseguire il modulo ES creato da Vite",
+        "es": "widget vis-2: el conjunto de widgets se carga de nuevo. El vis-2 2.20 lo cargó como un script clásico, que no puede ejecutar el módulo ES que crea Vite",
+        "pl": "widżet vis-2: zestaw widżetów ładuje się ponownie. vis-2 2.20 załadował go jako klasyczny skrypt, który nie może uruchomić modułu ES, który tworzy Vite",
+        "uk": "віджет vis-2: набір віджетів завантажується знову. vis-2 2.20 завантажив його як класичний скрипт, який не може запустити модуль ES, який будує Vite",
+        "zh-cn": "vis-2 控件：小部件集再次加载。vis-2 2.20 将其作为经典脚本加载，无法运行 Vite 构建的 ES 模块"
+      },
       "0.4.0": {
         "en": "Added the web component `<iob-opensmartcity-map>` - the map of the stations with their latest values - for Aura, admin and other hosts of `@iobroker/web-components` (`common.webComponents`)\nvis-2 widget: the setting \"Zoom level\" works now (0 = all stations fit into the map)",
         "de": "Die Web-Komponente <iob-opensmartcity-map>`- die Karte der Stationen mit den aktuellen Werten - für Aura, Admin und andere Hosts von` @iobroker /web-components `(`common.WebComponents`) hinzugefügt\nVis-2-Widget: Die Zoomstufe gilt jetzt (0 = alle Stationen passen in die Karte)",

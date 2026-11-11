@@ -1,6 +1,6 @@
 {
   "name": "iobroker.opensmartcity",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "ioBroker opensmartcity Adapter",
   "author": {
     "name": "ioBroker Community Developers",
@@ -27,7 +27,8 @@
   },
   "dependencies": {
     "@iobroker/adapter-core": "^3.4.3",
-    "axios": "^1.21.0"
+    "axios": "^1.21.0",
+    "iobroker.opensmartcity": "file:"
   },
   "devDependencies": {
     "@alcalzone/release-script": "^5.2.1",

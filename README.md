@@ -15,7 +15,7 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-### **WORK IN PROGRESS**
+### 0.4.1 (2026-11-11)
 - (@GermanBluefox) vis-2 widget: the widget set loads again. vis-2 2.20 loaded it as a classic script, which cannot run the ES module that Vite builds
 
 ### 0.4.0 (2026-11-08)
@@ -41,9 +41,6 @@
 ### 0.2.2 (2024-03-12)
 * (bluefox) Corrected readme link
 * (bluefox) Packages were updated
-
-### 0.2.1 (2023-11-28)
-* (bluefox) Corrected vis-2 widget
 
 [Older changelogs can be found there](CHANGELOG_OLD.md)
 
