@@ -15,6 +15,9 @@
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+- (@GermanBluefox) Removed the adapter from its own dependencies. It slipped into 0.4.1, which was therefore not published - this release brings its vis-2 widget fix
+
 ### 0.4.1 (2026-11-11)
 - (@GermanBluefox) vis-2 widget: the widget set loads again. vis-2 2.20 loaded it as a classic script, which cannot run the ES module that Vite builds
 
