@@ -149,6 +149,7 @@
         "i18n": "component",
         "name": "opensmartcity",
         "url": "opensmartcity/customWidgets.js",
+        "bundlerType": "module",
         "components": [
           "OpenSmartCityMap"
         ]
