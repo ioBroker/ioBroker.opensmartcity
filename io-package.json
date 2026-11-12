@@ -169,7 +169,28 @@
       }
     },
     "webComponents": [
-      "webcomponents/opensmartcity-map.json"
+      {
+        "manifest": "webcomponents/opensmartcity-map.json",
+        "tag": "iob-opensmartcity-map",
+        "name": {
+          "en": "Open Smart City Map",
+          "de": "Open Smart City Karte",
+          "ru": "Open Smart City Карта",
+          "pt": "Open Smart City Map",
+          "nl": "Open Smart City Map",
+          "fr": "Open Smart City Map",
+          "it": "Open Smart City Map",
+          "es": "Open Smart City Map",
+          "pl": "Open Smart City Map",
+          "uk": "Open Smart City Map",
+          "zh-cn": "Open Smart City Map"
+        },
+        "icon": "../opensmartcity.png",
+        "size": {
+          "width": 400,
+          "height": 300
+        }
+      }
     ],
     "tier": 3,
     "licenseInformation": {
