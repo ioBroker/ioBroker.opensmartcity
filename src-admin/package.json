@@ -16,7 +16,7 @@
         "react-dom": "^19.3.1",
         "react-moment": "^2.0.2",
         "typescript": "~7.0.2",
-        "vite": "^8.3.6"
+        "vite": "^8.3.8"
     },
     "devDependencies": {
         "@types/react": "^19.3.0",
