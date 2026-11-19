@@ -9,7 +9,7 @@
         "@iobroker/gui-components": "^10.4.6",
         "@mui/icons-material": "^9.5.0",
         "@mui/material": "^9.5.0",
-        "@vitejs/plugin-react": "^6.2.1",
+        "@vitejs/plugin-react": "^6.3.0",
         "moment": "^2.31.0",
         "ol": "^10.11.0",
         "react": "^19.3.1",
